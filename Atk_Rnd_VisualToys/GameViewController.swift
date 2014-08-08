@@ -59,13 +59,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         scnView.showsStatistics = true
         
         // configure the view
-        scnView.backgroundColor = UIColor.whiteColor()
+        scnView.backgroundColor = UIColor.blackColor()
+
+        // delegate to self
+        scnView.delegate = self
+        
+        scene.rootNode.runAction(SCNAction.customActionWithDuration(5, actionBlock:{
+            (triNode:SCNNode!, elapsedTime:CGFloat) -> Void in
+        }))
         
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         let camera = SCNCamera()
         
-        camera.usesOrthographicProjection = true
+        //camera.usesOrthographicProjection = true
+        
         cameraNode.camera = camera
         scene.rootNode.addChildNode(cameraNode)
         scnView.pointOfView = cameraNode;
@@ -104,7 +112,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         println("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
         
         let r:Float = 1.0;
-        let tri_scale:Float = 0.5; //(float)randInt(120, 400);
+        let tri_scale:Float = 2.0; //(float)randInt(120, 400);
     
         var co:Float = Float(cos(M_PI/3.0) * Double(r)); //0.5
         var si:Float = Float(sin(M_PI/3.0) * Double(r)); //0.86
@@ -117,12 +125,21 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         let width:Float = maxEx.x - minEx.x
         let height:Float = maxEx.y - minEx.y
         
-        let amtX:Float = ceil((((width * Float(2.0)) - Float(0.5)) / (Float(1.5) * tri_width)) + Float(0.5) )
-        let w:Float = ((amtX * Float(1.5)) + Float(0.5)) * tri_width
-        let xOffset:Float = -((w - width)/Float(2.0))
+        println("width: \(width) height: \(height)")
         
-        let amtY:Float = ceil((height * Float(2.0)) / (tri_height) + Float(0.5) )
-        let yOffset:Float = -((amtY*(tri_height) - height)/Float(2.0))
+        let amtX:Float = ceil(width / tri_width / Float(1.5))
+        let w:Float = ((amtX * Float(1.5)) + Float(0.5)) * tri_width
+        let xOffset:Float = -(w/Float(2.0)) + tri_width
+        
+        var h = height  / (tri_height * Float(2.0))
+        println("h: \(h)")
+        
+        let amtY:Float = ceil(height  / (tri_height * Float(2.0))) + 1
+        let yOffset:Float = -(amtY * (tri_height * Float(2.0)) - tri_height) / Float(2.0)
+        
+        println("xOffset: \(xOffset) amtX: \(amtX)")
+        println("yOffset: \(yOffset) amtY: \(amtY)")
+        println("tri_width: \(tri_width) tri_height: \(tri_height)")
         
         let uva  = Vector2Make(0.0, 0.0)
         let uvb  = Vector2Make(1.0, 0.0)
@@ -133,12 +150,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         var normals:[SCNVector3] = [];
         var uvs:[Vector2] = [];
         
+        var numTriangles = 0
+        var numPrimitives = 0
+        
         // creates a series of hexagons composed of 6 triangles each
         first: for( var i:Float = 0; i < amtX; i++ ) {
             var startX:Float = ((tri_width) * 1.5 * i)
             startX += xOffset
             for( var j:Float = 0; j < amtY; j++ ) {
-                var startY:Float = (i%2==0) ? (tri_height*2*j) - (tri_height) : tri_height*2*j
+                var startY:Float = (i%2==0) ? (tri_height*2*j) : tri_height*2*j + (tri_height)
                 startY += yOffset;
                 
                 var scale = SCNVector3( x: tri_scale, y: tri_scale, z: 1.0 )
@@ -222,7 +242,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
                 uvs.append(uvc)
                 uvs.append(uvb)
                 
-                //break first
+                numTriangles += 6
             }
         }
 
@@ -266,6 +286,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         
         // Indexes
         
+        /*
         for primitive in 0..<primitiveCount {
             
             let min:CInt = CInt(primitive * 3)
@@ -286,7 +307,24 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
             
             elements.append(indexElement)
         }
+        */
 
+        var indices:[CInt] = []
+        
+        for n in 0..<vertices.count {
+            indices.append(CInt(n))
+        }
+        
+        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        var indexElement = SCNGeometryElement(
+            data: indexData,
+            primitiveType: .Triangles,
+            primitiveCount: primitiveCount,
+            bytesPerIndex: sizeof(CInt)
+        )
+        
+        elements.append(indexElement)
+        
         var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
         
         if(self.textureSource == .Video) {
@@ -521,7 +559,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             self.session!.sessionPreset = AVCaptureSessionPreset640x480
         } else {
-            self.session!.sessionPreset = AVCaptureSessionPresetPhoto
+            self.session!.sessionPreset = AVCaptureSessionPresetPhoto //AVCaptureSessionPresetiFrame960x540
         }
         
         // Select a video device, make an input
@@ -562,29 +600,27 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         self.session!.startRunning()
     }
     
+    private var _videoCaptureRate = FrequencyCounter();
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-        NSLog("captureOutput");
+        if _videoCaptureRate.count == 0 {
+            _videoCaptureRate.start()
+        }
+        _videoCaptureRate.increment()
+        if _videoCaptureRate.count % 30 == 0 {
+            //NSLog("Video Capture Rate: \(_videoCaptureRate.frequency)/sec")
+        }
         self.videoBufferQueue.push(sampleBuffer)
     }
     
+    private var _videoFrameProcessingRate = FrequencyCounter();
     func processNextVideoTexture() {
 
-        NSLog("processNextVideoTexture");
+        //NSLog("processNextVideoTexture");
         
         var sampleBuffer:CMSampleBuffer? = self.videoBufferQueue.pop()
-        if(sampleBuffer == nil) {
+        if sampleBuffer == nil && self.lumaTexture == nil && self.chromaTexture == nil {
             return
         }
-        
-        var err: CVReturn = kCVReturnSuccess.value
-        // Wow!
-        var imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-        var pixelBuffer : CVPixelBuffer = Unmanaged<CVPixelBuffer>.fromOpaque(Unmanaged<CVImageBuffer>.passUnretained(imageBuffer).toOpaque()).takeUnretainedValue()
-        var width = CVPixelBufferGetWidth(pixelBuffer)
-        var height = CVPixelBufferGetHeight(pixelBuffer)
-        
-        self.textureWidth = width
-        self.textureHeight = height
         
         if (videoTextureCache == nil)
         {
@@ -592,6 +628,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
             return;
         }
         
+        if _videoFrameProcessingRate.count == 0 {
+            _videoFrameProcessingRate.start()
+        }
+        _videoFrameProcessingRate.increment()
+        if _videoFrameProcessingRate.count % 30 == 0 {
+            //NSLog("Video Frame Processing Rate: \(_videoFrameProcessingRate.frequency)/sec")
+        }
+        
+        var imageBuffer:CVImageBuffer? = nil
+        var err: CVReturn = kCVReturnSuccess.value
+        
+        if sampleBuffer != nil {
+            
+            imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+            var pixelBuffer : CVPixelBuffer = Unmanaged<CVPixelBuffer>.fromOpaque(Unmanaged<CVImageBuffer>.passUnretained(imageBuffer!).toOpaque()).takeUnretainedValue()
+            var width = CVPixelBufferGetWidth(pixelBuffer)
+            var height = CVPixelBufferGetHeight(pixelBuffer)
+            
+            self.textureWidth = width
+            self.textureHeight = height
+        }
+    
         self.cleanupTextures()
         
         // CVOpenGLESTextureCacheCreateTextureFromImage will create GLES texture
@@ -600,25 +658,27 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         // Y-plane
         glActiveTexture(GLenum(GL_TEXTURE0))
         
-        var unmanagedLumaTexture:Unmanaged<CVOpenGLESTexture>? = nil
-        
-        err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-            self.videoTextureCache,
-            imageBuffer,
-            nil,
-            GLenum(GL_TEXTURE_2D),
-            GL_RED_EXT,
-            GLsizei(textureWidth),
-            GLsizei(textureHeight),
-            GLenum(GL_RED_EXT),
-            GLenum(GL_UNSIGNED_BYTE),
-            0,
-            &unmanagedLumaTexture)
-        
-        self.lumaTexture = unmanagedLumaTexture?.takeRetainedValue()
-        
-        if (err != kCVReturnSuccess.value) {
-            NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
+        if imageBuffer != nil {
+            var unmanagedLumaTexture:Unmanaged<CVOpenGLESTexture>? = nil
+            
+            err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                self.videoTextureCache,
+                imageBuffer,
+                nil,
+                GLenum(GL_TEXTURE_2D),
+                GL_RED_EXT,
+                GLsizei(textureWidth),
+                GLsizei(textureHeight),
+                GLenum(GL_RED_EXT),
+                GLenum(GL_UNSIGNED_BYTE),
+                0,
+                &unmanagedLumaTexture)
+            
+            self.lumaTexture = unmanagedLumaTexture?.takeRetainedValue()
+            
+            if (err != kCVReturnSuccess.value) {
+                NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
+            }
         }
         
         glBindTexture(CVOpenGLESTextureGetTarget(self.lumaTexture), CVOpenGLESTextureGetName(self.lumaTexture));
@@ -629,25 +689,27 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         
         glActiveTexture(GLenum(GL_TEXTURE1))
         
-        var unmanagedChromaTexture:Unmanaged<CVOpenGLESTexture>? = nil
-        
-        err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-            self.videoTextureCache,
-            imageBuffer,
-            nil,
-            GLenum(GL_TEXTURE_2D),
-            GL_RG_EXT,
-            GLsizei(textureWidth/2),
-            GLsizei(textureHeight/2),
-            GLenum(GL_RG_EXT),
-            GLenum(GL_UNSIGNED_BYTE),
-            1,
-            &unmanagedChromaTexture)
-        
-        self.chromaTexture = unmanagedChromaTexture?.takeRetainedValue()
-        
-        if (err != kCVReturnSuccess.value) {
-            NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
+        if imageBuffer != nil {
+            var unmanagedChromaTexture:Unmanaged<CVOpenGLESTexture>? = nil
+            
+            err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                self.videoTextureCache,
+                imageBuffer,
+                nil,
+                GLenum(GL_TEXTURE_2D),
+                GL_RG_EXT,
+                GLsizei(textureWidth/2),
+                GLsizei(textureHeight/2),
+                GLenum(GL_RG_EXT),
+                GLenum(GL_UNSIGNED_BYTE),
+                1,
+                &unmanagedChromaTexture)
+            
+            self.chromaTexture = unmanagedChromaTexture?.takeRetainedValue()
+            
+            if (err != kCVReturnSuccess.value) {
+                NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
+            }
         }
         
         glBindTexture(CVOpenGLESTextureGetTarget(self.chromaTexture), CVOpenGLESTextureGetName(self.chromaTexture));
@@ -663,9 +725,46 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         CVOpenGLESTextureCacheFlush(self.videoTextureCache, 0)
     }
     
+    func createSphereNode(color:UIColor) -> SCNNode {
+        
+        let sphere = SCNSphere()
+        var material = SCNMaterial()
+        material.diffuse.contents  = color
+        sphere.materials = [material];
+        let sphereNode = SCNNode()
+        sphereNode.geometry = sphere
+        sphereNode.scale = SCNVector3Make(0.25, 0.25, 0.25)
+        return sphereNode
+    }
+    
+    func createCorners() {
+        
+        let extents = self.getExtents()
+        let minEx = extents.min
+        let maxEx = extents.max
+        
+        let scnView = self.view as SCNView
+        let scene = scnView.scene
+        
+        var sphereCenterNode = createSphereNode(UIColor.redColor())
+        sphereCenterNode.position = SCNVector3Make(0.0, 0.0, 0.0)
+        scene.rootNode.addChildNode(sphereCenterNode)
+        
+        var sphereLLNode = createSphereNode(UIColor.blueColor())
+        sphereLLNode.position = SCNVector3Make(minEx.x, minEx.y, 0.0)
+        scene.rootNode.addChildNode(sphereLLNode)
+        
+        var sphereURNode = createSphereNode(UIColor.greenColor())
+        sphereURNode.position = SCNVector3Make(maxEx.x, maxEx.y, 0.0)
+        scene.rootNode.addChildNode(sphereURNode)
+    }
+    
+    private var _videoActionRate = FrequencyCounter();
     func createMirror() {
         
         if !hasMirror {
+            //createCorners()
+            
             let scnView = self.view as SCNView
             let scene = scnView.scene
             
@@ -673,15 +772,34 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
             
             triNode.geometry = defineMirrorGrid()
             triNode.position = SCNVector3(x: 0, y: 0, z: 0)
+            //triNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+            
             triNode.name = "mirrors"
 
             var videoAction = SCNAction.customActionWithDuration(10000000000, actionBlock:{
                 (triNode:SCNNode!, elapsedTime:CGFloat) -> Void in
-                NSLog("Running action")
+                //NSLog("Running action")
+                
+                if self._videoActionRate.count == 0 {
+                    self._videoActionRate.start()
+                }
+                self._videoActionRate.increment()
+                if self._videoActionRate.count % 30 == 0 {
+                    //NSLog("Video Action Rate: \(self._videoActionRate.frequency)/sec")
+                }
+                
                 self.processNextVideoTexture()
             })
+            
+            var swellAction = SCNAction.repeatActionForever(SCNAction.sequence(
+                [
+                    SCNAction.scaleTo(1.01, duration: 1),
+                    SCNAction.scaleTo(1.0, duration: 1),
+                ]))
 
-            triNode.runAction(videoAction)
+            var actions = SCNAction.group([videoAction])
+            
+            triNode.runAction(actions)
          
             scene.rootNode.addChildNode(triNode)
             
@@ -716,11 +834,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         
         program.setSemantic(SCNGeometrySourceSemanticVertex, forSymbol: "position", options: nil)
         program.setSemantic(SCNGeometrySourceSemanticTexcoord, forSymbol: "textureCoordinate", options: nil)
-        //program.setSemantic(SCNModelViewProjectionTransform, forSymbol: "modelViewProjection", options: nil)
+        program.setSemantic(SCNModelViewProjectionTransform, forSymbol: "modelViewProjection", options: nil)
         
         program.delegate = self
         
         material.program = program
+        material.doubleSided = true
         material.handleBindingOfSymbol("SamplerY", usingBlock: {
             (programId:UInt32, location:UInt32, node:SCNNode!, renderer:SCNRenderer!) -> Void in
                 //NSLog("handleBindingOfSymbol: SamplerY")
@@ -743,10 +862,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
         NSLog("%@", error)
     }
     
+    // SCNSceneRendererDelegate
+    private var _renderCount = 0
+    func renderer(aRenderer: SCNSceneRenderer!, didRenderScene scene: SCNScene!, atTime time: NSTimeInterval) {
+        if _renderCount++ > 0 {
+            self.createMirror()
+        }
+    }
+    
     func handleTap(gestureRecognize: UIGestureRecognizer) {
 
-        self.createMirror()
-        
         // retrieve the SCNView
         let scnView = self.view as SCNView
         
@@ -779,7 +904,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNProgram
     }
     
     override func shouldAutorotate() -> Bool {
-        return true
+        return false
     }
     
     override func supportedInterfaceOrientations() -> Int {

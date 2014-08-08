@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D4E54A019940E9600E6A82C /* FrequencyCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */; };
+		1D4E54A21994178100E6A82C /* ElapsedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E54A11994178100E6A82C /* ElapsedTimer.swift */; };
 		1D62050519928E8E005DDBC9 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 1D62050319928E8E005DDBC9 /* Shader.fsh */; };
 		1D62050619928E8E005DDBC9 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 1D62050419928E8E005DDBC9 /* Shader.vsh */; };
 		1D9A299419932B3000854CB4 /* RecycleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9A299319932B3000854CB4 /* RecycleContainer.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrequencyCounter.swift; sourceTree = "<group>"; };
+		1D4E54A11994178100E6A82C /* ElapsedTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElapsedTimer.swift; sourceTree = "<group>"; };
 		1D62050319928E8E005DDBC9 /* Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.fsh; sourceTree = "<group>"; };
 		1D62050419928E8E005DDBC9 /* Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.vsh; sourceTree = "<group>"; };
 		1D9A299319932B3000854CB4 /* RecycleContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecycleContainer.swift; sourceTree = "<group>"; };
@@ -120,6 +124,8 @@
 				1D9A299519932F5B00854CB4 /* Containers */,
 				1DA51AA4199152440048BD54 /* Math */,
 				1D9A299A1993491500854CB4 /* LockHandle.swift */,
+				1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */,
+				1D4E54A11994178100E6A82C /* ElapsedTimer.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -301,7 +307,9 @@
 				1DFE59EE19900D6900B8B3D3 /* AppDelegate.swift in Sources */,
 				1DA3F6F419918F4A004B2681 /* SCNMatrix4Extensions.swift in Sources */,
 				1D9A299919933B5300854CB4 /* CircularQueue.swift in Sources */,
+				1D4E54A21994178100E6A82C /* ElapsedTimer.swift in Sources */,
 				1DA51AA81991642C0048BD54 /* UIColorExtensions.swift in Sources */,
+				1D4E54A019940E9600E6A82C /* FrequencyCounter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

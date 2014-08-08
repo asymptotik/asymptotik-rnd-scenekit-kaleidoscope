@@ -119,7 +119,7 @@ public class CircularQueue<T> {
         }
         
         var element:T? = _elements[_start]
-        if element == nil {
+        if element != nil {
             _elements[_start++] = nil
             if _start >= _maxElements {
                 _start = 0
