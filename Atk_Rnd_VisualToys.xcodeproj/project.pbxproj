@@ -9,8 +9,12 @@
 /* Begin PBXBuildFile section */
 		1D4E54A019940E9600E6A82C /* FrequencyCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */; };
 		1D4E54A21994178100E6A82C /* ElapsedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E54A11994178100E6A82C /* ElapsedTimer.swift */; };
+		1D4E54A61995491700E6A82C /* KaleidoscopeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E54A51995491700E6A82C /* KaleidoscopeSettingsViewController.swift */; };
 		1D62050519928E8E005DDBC9 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 1D62050319928E8E005DDBC9 /* Shader.fsh */; };
 		1D62050619928E8E005DDBC9 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 1D62050419928E8E005DDBC9 /* Shader.vsh */; };
+		1D6F67AD1995707400D61D9C /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F67AC1995707400D61D9C /* Geometry.swift */; };
+		1D6F67AF199570F700D61D9C /* SCNViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F67AE199570F700D61D9C /* SCNViewExtensions.swift */; };
+		1D6F67B11995729A00D61D9C /* VideoCaptureBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F67B01995729A00D61D9C /* VideoCaptureBuffer.swift */; };
 		1D9A299419932B3000854CB4 /* RecycleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9A299319932B3000854CB4 /* RecycleContainer.swift */; };
 		1D9A299719932F7000854CB4 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9A299619932F7000854CB4 /* Queue.swift */; };
 		1D9A299919933B5300854CB4 /* CircularQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9A299819933B5300854CB4 /* CircularQueue.swift */; };
@@ -21,7 +25,7 @@
 		1DA51AA81991642C0048BD54 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */; };
 		1DFE59EE19900D6900B8B3D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE59ED19900D6900B8B3D3 /* AppDelegate.swift */; };
 		1DFE59F019900D6900B8B3D3 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DFE59EF19900D6900B8B3D3 /* art.scnassets */; };
-		1DFE59F219900D6900B8B3D3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE59F119900D6900B8B3D3 /* GameViewController.swift */; };
+		1DFE59F219900D6900B8B3D3 /* KaleidoscopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE59F119900D6900B8B3D3 /* KaleidoscopeViewController.swift */; };
 		1DFE59F519900D6900B8B3D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1DFE59F319900D6900B8B3D3 /* Main.storyboard */; };
 		1DFE59F719900D6900B8B3D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DFE59F619900D6900B8B3D3 /* Images.xcassets */; };
 		1DFE5A0319900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE5A0219900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.swift */; };
@@ -40,8 +44,12 @@
 /* Begin PBXFileReference section */
 		1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrequencyCounter.swift; sourceTree = "<group>"; };
 		1D4E54A11994178100E6A82C /* ElapsedTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElapsedTimer.swift; sourceTree = "<group>"; };
+		1D4E54A51995491700E6A82C /* KaleidoscopeSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KaleidoscopeSettingsViewController.swift; sourceTree = "<group>"; };
 		1D62050319928E8E005DDBC9 /* Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.fsh; sourceTree = "<group>"; };
 		1D62050419928E8E005DDBC9 /* Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.vsh; sourceTree = "<group>"; };
+		1D6F67AC1995707400D61D9C /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		1D6F67AE199570F700D61D9C /* SCNViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCNViewExtensions.swift; sourceTree = "<group>"; };
+		1D6F67B01995729A00D61D9C /* VideoCaptureBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCaptureBuffer.swift; sourceTree = "<group>"; };
 		1D9A299319932B3000854CB4 /* RecycleContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecycleContainer.swift; sourceTree = "<group>"; };
 		1D9A299619932F7000854CB4 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		1D9A299819933B5300854CB4 /* CircularQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularQueue.swift; sourceTree = "<group>"; };
@@ -50,11 +58,12 @@
 		1DA51AA0199077E10048BD54 /* SCNVector3Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCNVector3Extensions.swift; sourceTree = "<group>"; };
 		1DA51AA5199152550048BD54 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
 		1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
-		1DFE59E819900D6900B8B3D3 /* Atk_Rnd_VisualToys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atk_Rnd_VisualToys.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DFE59E819900D6900B8B3D3 /* KaleidoKam
+.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KaleidoKam\n.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DFE59EC19900D6900B8B3D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DFE59ED19900D6900B8B3D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1DFE59EF19900D6900B8B3D3 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		1DFE59F119900D6900B8B3D3 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		1DFE59F119900D6900B8B3D3 /* KaleidoscopeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KaleidoscopeViewController.swift; sourceTree = "<group>"; };
 		1DFE59F419900D6900B8B3D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1DFE59F619900D6900B8B3D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1DFE59FC19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Atk_Rnd_VisualToysTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +89,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D4E54A3199548B900E6A82C /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1DFE59F119900D6900B8B3D3 /* KaleidoscopeViewController.swift */,
+				1D4E54A51995491700E6A82C /* KaleidoscopeSettingsViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		1D4E54A4199548C700E6A82C /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				1DFE59F319900D6900B8B3D3 /* Main.storyboard */,
+				1DFE59ED19900D6900B8B3D3 /* AppDelegate.swift */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
 		1D62050219928E59005DDBC9 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +132,7 @@
 				1DA51AA0199077E10048BD54 /* SCNVector3Extensions.swift */,
 				1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */,
 				1DA3F6F319918F4A004B2681 /* SCNMatrix4Extensions.swift */,
+				1D6F67AE199570F700D61D9C /* SCNViewExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -126,6 +154,8 @@
 				1D9A299A1993491500854CB4 /* LockHandle.swift */,
 				1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */,
 				1D4E54A11994178100E6A82C /* ElapsedTimer.swift */,
+				1D6F67AC1995707400D61D9C /* Geometry.swift */,
+				1D6F67B01995729A00D61D9C /* VideoCaptureBuffer.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -150,7 +180,8 @@
 		1DFE59E919900D6900B8B3D3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1DFE59E819900D6900B8B3D3 /* Atk_Rnd_VisualToys.app */,
+				1DFE59E819900D6900B8B3D3 /* KaleidoKam
+.app */,
 				1DFE59FC19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.xctest */,
 			);
 			name = Products;
@@ -159,13 +190,12 @@
 		1DFE59EA19900D6900B8B3D3 /* Atk_Rnd_VisualToys */ = {
 			isa = PBXGroup;
 			children = (
+				1D4E54A4199548C700E6A82C /* Application */,
+				1D4E54A3199548B900E6A82C /* Controllers */,
 				1D62050219928E59005DDBC9 /* Shaders */,
 				1DA51AA3199152370048BD54 /* Components */,
 				1DA51AA2199143550048BD54 /* Resources */,
 				1DA51A9F199077A10048BD54 /* Extensions */,
-				1DFE59ED19900D6900B8B3D3 /* AppDelegate.swift */,
-				1DFE59F119900D6900B8B3D3 /* GameViewController.swift */,
-				1DFE59F319900D6900B8B3D3 /* Main.storyboard */,
 				1DFE59EB19900D6900B8B3D3 /* Supporting Files */,
 			);
 			path = Atk_Rnd_VisualToys;
@@ -213,7 +243,8 @@
 			);
 			name = Atk_Rnd_VisualToys;
 			productName = Atk_Rnd_VisualToys;
-			productReference = 1DFE59E819900D6900B8B3D3 /* Atk_Rnd_VisualToys.app */;
+			productReference = 1DFE59E819900D6900B8B3D3 /* KaleidoKam
+.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1DFE59FB19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests */ = {
@@ -300,14 +331,18 @@
 			files = (
 				1DA51AA1199077E10048BD54 /* SCNVector3Extensions.swift in Sources */,
 				1D9A299419932B3000854CB4 /* RecycleContainer.swift in Sources */,
+				1D4E54A61995491700E6A82C /* KaleidoscopeSettingsViewController.swift in Sources */,
 				1D9A299B1993491500854CB4 /* LockHandle.swift in Sources */,
-				1DFE59F219900D6900B8B3D3 /* GameViewController.swift in Sources */,
+				1DFE59F219900D6900B8B3D3 /* KaleidoscopeViewController.swift in Sources */,
 				1D9A299719932F7000854CB4 /* Queue.swift in Sources */,
 				1DA51AA6199152550048BD54 /* Vector.swift in Sources */,
+				1D6F67AD1995707400D61D9C /* Geometry.swift in Sources */,
+				1D6F67B11995729A00D61D9C /* VideoCaptureBuffer.swift in Sources */,
 				1DFE59EE19900D6900B8B3D3 /* AppDelegate.swift in Sources */,
 				1DA3F6F419918F4A004B2681 /* SCNMatrix4Extensions.swift in Sources */,
 				1D9A299919933B5300854CB4 /* CircularQueue.swift in Sources */,
 				1D4E54A21994178100E6A82C /* ElapsedTimer.swift in Sources */,
+				1D6F67AF199570F700D61D9C /* SCNViewExtensions.swift in Sources */,
 				1DA51AA81991642C0048BD54 /* UIColorExtensions.swift in Sources */,
 				1D4E54A019940E9600E6A82C /* FrequencyCounter.swift in Sources */,
 			);
@@ -427,7 +462,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Atk_Rnd_VisualToys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "KaleidoKam\n";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -439,7 +474,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Atk_Rnd_VisualToys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "KaleidoKam\n";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
