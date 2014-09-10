@@ -149,7 +149,7 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
             
             let triNode = SCNNode()
             
-            var geometry = Geometry.createKaleidoscopeMirror(scnView)
+            var geometry = Geometry.createKaleidoscopeMirrorWithIsoscelesTriangles(scnView)
             triNode.geometry = geometry
             triNode.position = SCNVector3(x: 0, y: 0, z: 0)
             
@@ -282,6 +282,9 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         println("tapPoint: (\(viewPoint.x), \(viewPoint.y)) scenePoint: (\(scenePoint.x), \(scenePoint.y), \(scenePoint.z))")
     }
     
+    //
+    // Settings
+    //
     func startBreathing(depth:CGFloat, duration:NSTimeInterval) {
         
         self.stopBreathing()
@@ -304,12 +307,45 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         mirrorNode.removeActionForKey("breatheAction")
     }
 
+    var isUsingFrontFacingCamera:Bool {
+        get {
+            return self.videoCapture.isUsingFrontFacingCamera
+        }
+        
+        set {
+            if newValue != self.videoCapture.isUsingFrontFacingCamera {
+                self.videoCapture.switchCameras()
+            }
+        }
+    }
+    
+    var maxZoom:CGFloat {
+        get {
+            return self.videoCapture.maxZoom
+        }
+    }
+    
+    var zoom:CGFloat {
+        get {
+            return self.videoCapture.zoom
+        }
+        
+        set {
+            self.videoCapture.zoom = newValue
+        }
+    }
+    
     var isSettingsOpen = false
     
     @IBAction func settingsButtonFired(sender: UIButton) {
         
         self.view.layoutIfNeeded()
         var offset = (self.isSettingsOpen ? -(self.settingsContainerView.frame.size.width + 20) : -20)
+        
+        if !self.isSettingsOpen {
+            self.settingsViewController!.settingsWillOpen()
+        }
+        
         UIView.animateWithDuration(0.6, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: ({
             self.settingsOffsetConstraint.constant = offset
             self.view.layoutIfNeeded()
@@ -318,9 +354,16 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
             self.isSettingsOpen = !self.isSettingsOpen
             let scnView = self.view as SCNView
             scnView.allowsCameraControl = !self.isSettingsOpen
+            
+            if !self.isSettingsOpen {
+                self.settingsViewController!.settingsDidClose()
+            }
         })
     }
     
+    //
+    // UIViewControlle overrides
+    //
     override func shouldAutorotate() -> Bool {
         return false
     }
@@ -335,6 +378,5 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
 }

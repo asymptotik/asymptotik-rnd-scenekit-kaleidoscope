@@ -11,7 +11,325 @@ import SceneKit
 
 class Geometry {
     
-    class func createKaleidoscopeMirror(view:SCNView) -> SCNGeometry {
+    class func createKaleidoscopeMirrorWithEquilateralTriangles(view:SCNView) -> SCNGeometry {
+        
+        let extents = view.getExtents()
+        let minEx   = extents.min
+        let maxEx   = extents.max
+        
+        println("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
+        
+        let r:Float = 1.0;
+        let tri_scale:Float = 2.0; //(float)randInt(120, 400);
+        
+        var co:Float = Float(cos(M_PI/3.0) * Double(r)); //0.5
+        var si:Float = Float(sin(M_PI/3.0) * Double(r)); //0.86
+        
+        let tri_width:Float = r * tri_scale
+        let tri_height:Float = si * tri_scale
+        
+        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        
+        let width:Float = maxEx.x - minEx.x
+        let height:Float = maxEx.y - minEx.y
+        
+        println("width: \(width) height: \(height)")
+        
+        let triCountX:Float = ceil(width  / tri_width)
+        let xOffset:Float = -(triCountX * tri_width / Float(2.0))
+        
+        let triCountY:Float = ceil(height  / tri_height)
+        let yOffset:Float = -(triCountY * tri_height / Float(2.0))
+        
+        println("xOffset: \(xOffset) triCountX: \(triCountX)")
+        println("yOffset: \(yOffset) triCountY: \(triCountY)")
+        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        
+        let uva  = Vector2Make(0.0, 0.0)
+        let uvb  = Vector2Make(1.0, 0.0)
+        let uvc  = Vector2Make(0.5, 1.0)
+        let norm = SCNVector3Make(0.0, 0.0, 1.0)
+        
+        var vertices:[SCNVector3] = []
+        var normals:[SCNVector3] = []
+        var uvs:[Vector2] = []
+        var indices:[CInt] = []
+        
+        var numTriangles = 0
+        var numPrimitives = 0
+        
+        var vertCountY = Int(triCountY) + 1
+        first: for var j:Int = 0; j < vertCountY; j++ {
+            
+            var startY:Float = tri_height*Float(j)
+            startY += yOffset;
+            
+            var ucArray = (j % 2 == 0 ? [uvb, uva, uvc] : [uva, uvc, uvb])
+            var actualTriCountX = Int(triCountX) + (j % 2 == 0 ? 0 : 1)
+            var vertCountX = Int(actualTriCountX) + 1
+            
+            for var i:Int = 0; i < vertCountX; i++ {
+                
+                var startX:Float =  (tri_width * Float(i)) - (j % 2 == 0 ? 0.0 : tri_width / 2.0)
+                startX += xOffset
+            
+                vertices.append(SCNVector3( x: startX, y: startY, z: 0.0 ))
+                normals.append(norm)
+                uvs.append(ucArray[i % 3])
+            }
+            
+            if j > 0 {
+                
+                if j % 2 == 1 {
+                    var lineVert = vertices.count - vertCountX;
+                    var prevLineVert = vertices.count - (vertCountX + vertCountX - 1);
+                    
+                    for var i:Int = 0; i < vertCountX - 2; ++i {
+                        
+                        indices.append(CInt(lineVert))
+                        indices.append(CInt(prevLineVert))
+                        indices.append(CInt(lineVert) + 1)
+                        
+                        indices.append(CInt(lineVert) + 1)
+                        indices.append(CInt(prevLineVert))
+                        indices.append(CInt(prevLineVert) + 1)
+                        
+                        ++prevLineVert;
+                        ++lineVert;
+                    }
+                    
+                    indices.append(CInt(lineVert))
+                    indices.append(CInt(prevLineVert))
+                    indices.append(CInt(lineVert) + 1)
+                    
+                } else {
+                    
+                    var lineVert = vertices.count - vertCountX;
+                    var prevLineVert = vertices.count - (vertCountX + vertCountX + 1);
+                    
+                    for var i:Int = 0; i < vertCountX - 1; ++i {
+                        
+                        indices.append(CInt(prevLineVert))
+                        indices.append(CInt(prevLineVert) + 1)
+                        indices.append(CInt(lineVert))
+                        
+                        indices.append(CInt(lineVert))
+                        indices.append(CInt(prevLineVert) + 1)
+                        indices.append(CInt(lineVert) + 1)
+                        
+                        ++prevLineVert;
+                        ++lineVert;
+                    }
+                    
+                    indices.append(CInt(prevLineVert))
+                    indices.append(CInt(prevLineVert) + 1)
+                    indices.append(CInt(lineVert))
+                }
+            }
+        }
+        
+        let primitiveCount = indices.count / 3
+        
+        // Vertices
+        let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
+        var vertexSource = SCNGeometrySource(data: vertexData,
+            semantic: SCNGeometrySourceSemanticVertex,
+            vectorCount: vertices.count,
+            floatComponents: true,
+            componentsPerVector: 3,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(SCNVector3))
+        
+        // Normals
+        let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
+        var normalSource = SCNGeometrySource(data: normalData,
+            semantic: SCNGeometrySourceSemanticNormal,
+            vectorCount: normals.count,
+            floatComponents: true,
+            componentsPerVector: 3,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(SCNVector3))
+        
+        // Textures
+        let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
+        var uvSource = SCNGeometrySource(data: uvData,
+            semantic: SCNGeometrySourceSemanticTexcoord,
+            vectorCount: uvs.count,
+            floatComponents: true,
+            componentsPerVector: 2,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(Vector2))
+        
+        // Indices
+        var elements:[SCNGeometryElement] = []
+        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        var indexElement = SCNGeometryElement(
+            data: indexData,
+            primitiveType: .Triangles,
+            primitiveCount: primitiveCount,
+            bytesPerIndex: sizeof(CInt)
+        )
+        
+        elements.append(indexElement)
+        
+        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
+        
+        return geo
+    }
+    
+    class func createKaleidoscopeMirrorWithIsoscelesTriangles(view:SCNView) -> SCNGeometry {
+        
+        let extents = view.getExtents()
+        let minEx   = extents.min
+        let maxEx   = extents.max
+        
+        println("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
+        
+        let r:Float = 1.0;
+        let tri_scale:Float = 2.0; //(float)randInt(120, 400);
+
+        let tri_width:Float = 1.0 * tri_scale
+        let tri_height:Float = 1.0 * tri_scale
+        
+        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        
+        let width:Float = maxEx.x - minEx.x
+        let height:Float = maxEx.y - minEx.y
+        
+        println("width: \(width) height: \(height)")
+        
+        let triCountX:Float = ceil(width  / tri_width)
+        let xOffset:Float = -(triCountX * tri_width / Float(2.0))
+        
+        let triCountY:Float = ceil(height  / tri_height)
+        let yOffset:Float = -(triCountY * tri_height / Float(2.0))
+        
+        println("xOffset: \(xOffset) triCountX: \(triCountX)")
+        println("yOffset: \(yOffset) triCountY: \(triCountY)")
+        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        
+        let uva  = Vector2Make(0.0, 0.0)
+        let uvb  = Vector2Make(1.0, 0.0)
+        let uvc  = Vector2Make(0.5, 1.0)
+        let norm = SCNVector3Make(0.0, 0.0, 1.0)
+        
+        var vertices:[SCNVector3] = []
+        var normals:[SCNVector3] = []
+        var uvs:[Vector2] = []
+        var indices:[CInt] = []
+        
+        var numTriangles = 0
+        var numPrimitives = 0
+        
+        var vertCountY = Int(triCountY) + 1
+        first: for var j:Int = 0; j < vertCountY; j++ {
+            
+            var startY:Float = tri_height*Float(j)
+            startY += yOffset;
+            
+            var ucArray = (j % 2 == 0 ? [uvc, uva] : [uvb, uvc])
+            var actualTriCountX = Int(triCountX)
+            var vertCountX = Int(actualTriCountX) + 1
+            
+            for var i:Int = 0; i < vertCountX; i++ {
+                
+                var startX:Float =  (tri_width * Float(i))
+                startX += xOffset
+                
+                vertices.append(SCNVector3( x: startX, y: startY, z: 0.0 ))
+                normals.append(norm)
+                uvs.append(ucArray[i % 2])
+            }
+            
+            let phase = (j % 2 == 1 ? 0 : 1)
+            if j > 0 {
+                
+                var lineVert = vertices.count - vertCountX;
+                var prevLineVert = vertices.count - (vertCountX + vertCountX);
+                
+                for var i:Int = 0; i < vertCountX - 1; ++i {
+                    
+                    if i % 2 == phase {
+                        indices.append(CInt(prevLineVert))
+                        indices.append(CInt(prevLineVert) + 1)
+                        indices.append(CInt(lineVert))
+                    
+                        indices.append(CInt(lineVert))
+                        indices.append(CInt(prevLineVert) + 1)
+                        indices.append(CInt(lineVert) + 1)
+                    }
+                    else {
+                        indices.append(CInt(lineVert))
+                        indices.append(CInt(prevLineVert))
+                        indices.append(CInt(lineVert) + 1)
+                        
+                        indices.append(CInt(lineVert) + 1)
+                        indices.append(CInt(prevLineVert))
+                        indices.append(CInt(prevLineVert) + 1)
+                    }
+                    
+                    ++prevLineVert;
+                    ++lineVert;
+                }
+            }
+        }
+        
+        let primitiveCount = indices.count / 3
+        
+        // Vertices
+        let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
+        var vertexSource = SCNGeometrySource(data: vertexData,
+            semantic: SCNGeometrySourceSemanticVertex,
+            vectorCount: vertices.count,
+            floatComponents: true,
+            componentsPerVector: 3,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(SCNVector3))
+        
+        // Normals
+        let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
+        var normalSource = SCNGeometrySource(data: normalData,
+            semantic: SCNGeometrySourceSemanticNormal,
+            vectorCount: normals.count,
+            floatComponents: true,
+            componentsPerVector: 3,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(SCNVector3))
+        
+        // Textures
+        let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
+        var uvSource = SCNGeometrySource(data: uvData,
+            semantic: SCNGeometrySourceSemanticTexcoord,
+            vectorCount: uvs.count,
+            floatComponents: true,
+            componentsPerVector: 2,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(Vector2))
+        
+        // Indices
+        var elements:[SCNGeometryElement] = []
+        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        var indexElement = SCNGeometryElement(
+            data: indexData,
+            primitiveType: .Triangles,
+            primitiveCount: primitiveCount,
+            bytesPerIndex: sizeof(CInt)
+        )
+        
+        elements.append(indexElement)
+        
+        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
+        
+        return geo
+    }
+    
+    class func createKaleidoscopeMirrorWithHexagons(view:SCNView) -> SCNGeometry {
         
         let extents = view.getExtents()
         let minEx = extents.min
@@ -35,18 +353,18 @@ class Geometry {
         
         println("width: \(width) height: \(height)")
         
-        let amtX:Float = ceil(width / tri_width / Float(1.5))
-        let w:Float = ((amtX * Float(1.5)) + Float(0.5)) * tri_width
+        let triCountX:Float = ceil(width / tri_width / Float(1.5))
+        let w:Float = ((triCountX * Float(1.5)) + Float(0.5)) * tri_width
         let xOffset:Float = -(w/Float(2.0)) + tri_width
         
         var h = height  / (tri_height * Float(2.0))
         println("h: \(h)")
         
-        let amtY:Float = ceil(height  / (tri_height * Float(2.0))) + 1
-        let yOffset:Float = -(amtY * (tri_height * Float(2.0)) - tri_height) / Float(2.0)
+        let triCountY:Float = ceil(height  / (tri_height * Float(2.0))) + 1
+        let yOffset:Float = -(triCountY * (tri_height * Float(2.0)) - tri_height) / Float(2.0)
         
-        println("xOffset: \(xOffset) amtX: \(amtX)")
-        println("yOffset: \(yOffset) amtY: \(amtY)")
+        println("xOffset: \(xOffset) triCountX: \(triCountX)")
+        println("yOffset: \(yOffset) triCountY: \(triCountY)")
         println("tri_width: \(tri_width) tri_height: \(tri_height)")
         
         let uva  = Vector2Make(0.0, 0.0)
@@ -62,10 +380,10 @@ class Geometry {
         var numPrimitives = 0
         
         // creates a series of hexagons composed of 6 triangles each
-        first: for( var i:Float = 0; i < amtX; i++ ) {
+        first: for( var i:Float = 0; i < triCountX; i++ ) {
             var startX:Float = ((tri_width) * 1.5 * i)
             startX += xOffset
-            for( var j:Float = 0; j < amtY; j++ ) {
+            for( var j:Float = 0; j < triCountY; j++ ) {
                 var startY:Float = (i%2==0) ? (tri_height*2*j) : tri_height*2*j + (tri_height)
                 startY += yOffset;
                 

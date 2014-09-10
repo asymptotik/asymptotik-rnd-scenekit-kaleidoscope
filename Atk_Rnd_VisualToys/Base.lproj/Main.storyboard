@@ -82,7 +82,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Breathe" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Pc-rr-OrS">
-                                <rect key="frame" x="16" y="36" width="150" height="21"/>
+                                <rect key="frame" x="16" y="81" width="150" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="ZRK-fm-xTc"/>
                                     <constraint firstAttribute="height" constant="21" id="jgK-Hk-iL9"/>
@@ -91,8 +91,18 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camera" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JuB-tc-Vlo">
+                                <rect key="frame" x="16" y="40" width="150" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="fwG-G8-JN8"/>
+                                    <constraint firstAttribute="width" constant="150" id="jCn-zY-rje"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Breathe Depth" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heD-vM-ceE">
-                                <rect key="frame" x="16" y="77" width="150" height="21"/>
+                                <rect key="frame" x="16" y="122" width="150" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="R5M-0E-3tH"/>
                                     <constraint firstAttribute="height" constant="21" id="ser-WX-cdb"/>
@@ -102,7 +112,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TGa-a4-Zkl">
-                                <rect key="frame" x="186" y="31" width="51" height="31"/>
+                                <rect key="frame" x="186" y="76" width="51" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="49" id="GCh-5O-IjX"/>
                                     <constraint firstAttribute="height" constant="31" id="xCL-G4-RC4"/>
@@ -111,14 +121,42 @@
                                     <action selector="breatheSwitchValueChanged:" destination="yMB-kL-qh3" eventType="valueChanged" id="DsT-1i-9Qy"/>
                                 </connections>
                             </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="NRd-Ys-l69">
+                                <rect key="frame" x="186" y="35" width="51" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="FKh-Zu-G08"/>
+                                    <constraint firstAttribute="height" constant="31" id="oPm-qP-LAu"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="q84-1f-CDd"/>
+                                    <constraint firstAttribute="width" constant="49" id="wnk-oZ-RId"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="FKh-Zu-G08"/>
+                                        <exclude reference="q84-1f-CDd"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="cameraSwitchValueChanged:" destination="yMB-kL-qh3" eventType="valueChanged" id="HC7-dQ-HeB"/>
+                                </connections>
+                            </switch>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="hii-yg-UUw">
-                                <rect key="frame" x="184" y="114" width="232" height="31"/>
+                                <rect key="frame" x="184" y="159" width="232" height="31"/>
                                 <connections>
                                     <action selector="breatheSpeedValueChanged:" destination="yMB-kL-qh3" eventType="valueChanged" id="syg-Ad-Fd9"/>
                                 </connections>
                             </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="LvK-W0-8Rv">
+                                <rect key="frame" x="184" y="200" width="232" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="MUd-dR-M0W"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="breatheSpeedValueChanged:" destination="yMB-kL-qh3" eventType="valueChanged" id="Uub-l2-gSs"/>
+                                    <action selector="cameraZoomValueChanged:" destination="yMB-kL-qh3" eventType="valueChanged" id="Jnp-jV-0NU"/>
+                                </connections>
+                            </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Breathe Speed" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Daz-8X-2ob">
-                                <rect key="frame" x="16" y="118" width="150" height="21"/>
+                                <rect key="frame" x="16" y="163" width="150" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="45H-wV-png"/>
                                     <constraint firstAttribute="height" constant="21" id="VII-bo-4dW"/>
@@ -127,30 +165,69 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camera Zoom" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rig-Ma-PLv">
+                                <rect key="frame" x="16" y="204" width="150" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="HD4-sk-dqm"/>
+                                    <constraint firstAttribute="height" constant="21" id="SfP-vN-SLG"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="Z0B-kW-3xs"/>
+                                    <constraint firstAttribute="width" constant="150" id="hEH-0b-jT3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1.2" minValue="1" maxValue="1.2" translatesAutoresizingMaskIntoConstraints="NO" id="Zyb-Ji-8Fa">
-                                <rect key="frame" x="184" y="73" width="232" height="31"/>
+                                <rect key="frame" x="184" y="118" width="232" height="31"/>
                                 <connections>
                                     <action selector="breatheDepthValueChanged:" destination="yMB-kL-qh3" eventType="valueChanged" id="5wq-Ah-PrX"/>
                                 </connections>
                             </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Space Exploration" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kJO-wf-uhn">
+                                <rect key="frame" x="255" y="40" width="159" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="t4G-5K-bAG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TGa-a4-Zkl" firstAttribute="leading" secondItem="7Pc-rr-OrS" secondAttribute="trailing" constant="20" id="1jJ-XN-guO"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Zyb-Ji-8Fa" secondAttribute="trailing" constant="20" id="4va-Zg-fpU"/>
                             <constraint firstItem="hii-yg-UUw" firstAttribute="centerY" secondItem="Daz-8X-2ob" secondAttribute="centerY" id="BlO-rA-uNA"/>
+                            <constraint firstItem="Rig-Ma-PLv" firstAttribute="top" secondItem="Daz-8X-2ob" secondAttribute="bottom" constant="20" id="FPv-1g-c0p"/>
                             <constraint firstItem="heD-vM-ceE" firstAttribute="leading" secondItem="kYC-3S-gpf" secondAttribute="leadingMargin" id="GJ2-p7-VSy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="kJO-wf-uhn" secondAttribute="trailing" constant="20" id="MCs-ja-6hS"/>
+                            <constraint firstItem="7Pc-rr-OrS" firstAttribute="top" secondItem="JuB-tc-Vlo" secondAttribute="bottom" constant="20" id="Q8J-Mc-U86"/>
+                            <constraint firstItem="NRd-Ys-l69" firstAttribute="leading" secondItem="JuB-tc-Vlo" secondAttribute="trailing" constant="20" id="SJ7-nu-b21"/>
+                            <constraint firstItem="JuB-tc-Vlo" firstAttribute="leading" secondItem="kYC-3S-gpf" secondAttribute="leadingMargin" id="XzE-S7-v2l"/>
                             <constraint firstItem="7Pc-rr-OrS" firstAttribute="leading" secondItem="kYC-3S-gpf" secondAttribute="leadingMargin" id="cOw-y8-9ZS"/>
                             <constraint firstItem="hii-yg-UUw" firstAttribute="leading" secondItem="Daz-8X-2ob" secondAttribute="trailing" constant="20" id="d9T-pD-wlX"/>
                             <constraint firstItem="7Pc-rr-OrS" firstAttribute="top" secondItem="Kbc-cC-R7M" secondAttribute="bottom" constant="36" id="eWO-th-AYE"/>
                             <constraint firstItem="heD-vM-ceE" firstAttribute="centerY" secondItem="Zyb-Ji-8Fa" secondAttribute="centerY" id="fp8-pS-KmC"/>
                             <constraint firstItem="Daz-8X-2ob" firstAttribute="leading" secondItem="kYC-3S-gpf" secondAttribute="leadingMargin" id="gNK-zR-Vxa"/>
+                            <constraint firstItem="NRd-Ys-l69" firstAttribute="centerY" secondItem="JuB-tc-Vlo" secondAttribute="centerY" id="jaV-R5-8ni"/>
+                            <constraint firstItem="LvK-W0-8Rv" firstAttribute="leading" secondItem="Rig-Ma-PLv" secondAttribute="trailing" constant="20" id="kSO-24-qho"/>
+                            <constraint firstItem="kJO-wf-uhn" firstAttribute="leading" secondItem="NRd-Ys-l69" secondAttribute="trailing" constant="20" id="laW-Mb-lC7"/>
                             <constraint firstItem="Zyb-Ji-8Fa" firstAttribute="leading" secondItem="heD-vM-ceE" secondAttribute="trailing" constant="20" id="lwK-NS-DkM"/>
                             <constraint firstItem="Daz-8X-2ob" firstAttribute="top" secondItem="heD-vM-ceE" secondAttribute="bottom" constant="20" id="mWx-6k-3EM"/>
                             <constraint firstItem="TGa-a4-Zkl" firstAttribute="centerY" secondItem="7Pc-rr-OrS" secondAttribute="centerY" id="mkl-Wc-8zI"/>
+                            <constraint firstItem="JuB-tc-Vlo" firstAttribute="centerY" secondItem="kJO-wf-uhn" secondAttribute="centerY" id="ntK-Uy-qq8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LvK-W0-8Rv" secondAttribute="trailing" constant="20" id="oF5-qn-gQU"/>
+                            <constraint firstItem="Rig-Ma-PLv" firstAttribute="leading" secondItem="kYC-3S-gpf" secondAttribute="leadingMargin" id="qyR-yb-UrE"/>
+                            <constraint firstItem="JuB-tc-Vlo" firstAttribute="top" secondItem="kYC-3S-gpf" secondAttribute="topMargin" constant="40" id="s4f-Z2-oGb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hii-yg-UUw" secondAttribute="trailing" constant="20" id="tfS-KI-8eh"/>
+                            <constraint firstItem="Rig-Ma-PLv" firstAttribute="centerY" secondItem="LvK-W0-8Rv" secondAttribute="centerY" id="vHi-XS-q02"/>
                             <constraint firstItem="heD-vM-ceE" firstAttribute="top" secondItem="7Pc-rr-OrS" secondAttribute="bottom" constant="20" id="wAt-f2-a7z"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="eWO-th-AYE"/>
+                            </mask>
+                        </variation>
                     </view>
                     <toolbarItems/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -159,6 +236,9 @@
                         <outlet property="breatheDepthSlider" destination="Zyb-Ji-8Fa" id="JmE-rl-hzo"/>
                         <outlet property="breatheSpeedSlider" destination="hii-yg-UUw" id="Gkp-FF-Mym"/>
                         <outlet property="breatheSwitch" destination="TGa-a4-Zkl" id="kFw-be-Z4H"/>
+                        <outlet property="cameraLabel" destination="kJO-wf-uhn" id="YWs-mN-bVu"/>
+                        <outlet property="cameraSwitch" destination="NRd-Ys-l69" id="g9b-mg-cC0"/>
+                        <outlet property="cameraZoomSlider" destination="LvK-W0-8Rv" id="BY1-fc-bUW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rm6-r5-wfE" userLabel="First Responder" sceneMemberID="firstResponder"/>

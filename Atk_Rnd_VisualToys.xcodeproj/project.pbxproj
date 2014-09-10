@@ -92,6 +92,7 @@
 		1D4E54A3199548B900E6A82C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1DFE59F319900D6900B8B3D3 /* Main.storyboard */,
 				1DFE59F119900D6900B8B3D3 /* KaleidoscopeViewController.swift */,
 				1D4E54A51995491700E6A82C /* KaleidoscopeSettingsViewController.swift */,
 			);
@@ -101,7 +102,6 @@
 		1D4E54A4199548C700E6A82C /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				1DFE59F319900D6900B8B3D3 /* Main.storyboard */,
 				1DFE59ED19900D6900B8B3D3 /* AppDelegate.swift */,
 			);
 			name = Application;

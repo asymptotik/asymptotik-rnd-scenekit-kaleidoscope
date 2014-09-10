@@ -14,8 +14,21 @@ class KaleidoscopeSettingsViewController: UIViewController {
     @IBOutlet weak var breatheDepthSlider: UISlider!
     @IBOutlet weak var breatheSpeedSlider: UISlider!
     weak var kaleidoscopeViewController: KaleidoscopeViewController!
+
+    @IBOutlet weak var cameraLabel: UILabel!
+    @IBOutlet weak var cameraSwitch: UISwitch!
+    
+    @IBOutlet weak var cameraZoomSlider: UISlider!
     
     override func viewDidLoad() {
+    }
+    
+    func settingsWillOpen() {
+        self.updateCameraSettings()
+    }
+    
+    func settingsDidClose() {
+        
     }
     
     @IBAction func breatheSwitchValueChanged(sender: UISwitch) {
@@ -37,5 +50,26 @@ class KaleidoscopeSettingsViewController: UIViewController {
         if breatheSwitch.on {
             self.kaleidoscopeViewController.startBreathing(CGFloat(breatheDepthSlider.value), duration: NSTimeInterval(breatheSpeedSlider.value))
         }
+    }
+    
+    @IBAction func cameraSwitchValueChanged(sender: UISwitch) {
+        if cameraSwitch.on {
+            cameraLabel.text = "Face Exploration"
+        }
+        else {
+            cameraLabel.text = "Space Exploration"
+        }
+        
+        self.kaleidoscopeViewController.isUsingFrontFacingCamera = cameraSwitch.on
+        self.updateCameraSettings()
+    }
+    
+    @IBAction func cameraZoomValueChanged(sender: UISlider) {
+        self.kaleidoscopeViewController.zoom = CGFloat(sender.value)
+    }
+    
+    func updateCameraSettings() {
+        self.cameraZoomSlider.maximumValue = Float(self.kaleidoscopeViewController.maxZoom)
+        self.cameraZoomSlider.value = Float(self.kaleidoscopeViewController.zoom)
     }
 }

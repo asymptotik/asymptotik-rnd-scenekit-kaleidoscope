@@ -25,6 +25,11 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
     var videoBufferingDispatchQueue = dispatch_queue_create("video displatch queue",  DISPATCH_QUEUE_CONCURRENT)
     var videoBufferQueue = CircularQueue<CMSampleBuffer>(size:3)
     
+    var isUsingFrontFacingCamera = false
+    
+    var captureDeviceFormat:AVCaptureDeviceFormat? = nil
+    var captureDevice:AVCaptureDevice? = nil
+    
     func initVideoCapture(context:EAGLContext) {
 
         var textureCache: Unmanaged<CVOpenGLESTextureCacheRef>?
@@ -47,14 +52,16 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         }
         
         // Select a video device, make an input
-        var device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
-        if(device == nil) {
+        self.captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        if(self.captureDevice == nil) {
             NSLog("Error: No video device");
             return;
         }
         
+        self.captureDeviceFormat = self.captureDevice!.activeFormat
+        
         var error:NSError? = nil
-        var deviceInput:AVCaptureDeviceInput = AVCaptureDeviceInput.deviceInputWithDevice(device, error: &error) as AVCaptureDeviceInput
+        var deviceInput:AVCaptureDeviceInput = AVCaptureDeviceInput.deviceInputWithDevice(self.captureDevice, error: &error) as AVCaptureDeviceInput
         
         if error != nil {
             var alertView = UIAlertView(title: "Failed with error \(error?.code)", message: error?.localizedDescription, delegate: nil, cancelButtonTitle: "Dismiss")
@@ -201,5 +208,69 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         glBindTexture(CVOpenGLESTextureGetTarget(self.chromaTexture), CVOpenGLESTextureGetName(self.chromaTexture));
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GL_CLAMP_TO_EDGE);
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GL_CLAMP_TO_EDGE);
+    }
+    
+    func switchCameras() {
+
+        var desiredPosition : AVCaptureDevicePosition = AVCaptureDevicePosition.Unspecified
+        if isUsingFrontFacingCamera {
+            desiredPosition = AVCaptureDevicePosition.Back
+        }
+        else {
+            desiredPosition = AVCaptureDevicePosition.Front
+        }
+    
+        for device in AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) {
+            var captureDevice = device as AVCaptureDevice
+            if captureDevice.position == desiredPosition {
+                session!.beginConfiguration()
+                
+                self.captureDeviceFormat = captureDevice.activeFormat
+                self.captureDevice = captureDevice
+                
+                var input = AVCaptureDeviceInput.deviceInputWithDevice(captureDevice, error: nil) as AVCaptureInput
+                for oldInput in session!.inputs {
+                    session!.removeInput(oldInput as AVCaptureInput)
+                }
+                session!.addInput(input)
+                session!.commitConfiguration()
+                
+                break
+            }
+        }
+        
+        isUsingFrontFacingCamera = !isUsingFrontFacingCamera
+    }
+    
+    var maxZoom:CGFloat {
+        get {
+            var ret = CGFloat(0.0)
+            if self.captureDeviceFormat != nil {
+                ret = self.captureDeviceFormat!.videoMaxZoomFactor / (self.isUsingFrontFacingCamera ? 10.0 : 4.0)
+            }
+            return ret
+        }
+    }
+    
+    var zoom:CGFloat {
+        get {
+            var ret = CGFloat(0.0)
+            if self.captureDevice != nil {
+                ret = self.captureDevice!.videoZoomFactor
+            }
+            return ret
+        }
+        
+        set {
+            var value = newValue
+            if self.captureDevice != nil && self.maxZoom > 0.0 {
+                self.captureDevice!.lockForConfiguration(nil)
+                if newValue < 0.0 { value = 0.0 }
+                if newValue > self.maxZoom { value = self.maxZoom }
+                NSLog("Setting zom to: %f", value)
+                self.captureDevice!.videoZoomFactor = value
+                self.captureDevice!.unlockForConfiguration()
+            }
+        }
     }
 }
