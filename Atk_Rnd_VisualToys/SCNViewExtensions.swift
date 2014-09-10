@@ -16,7 +16,6 @@ extension SCNView {
     */
     func getExtents() -> (min:SCNVector3, max:SCNVector3) {
         
-        let camera = self.pointOfView.camera
         let projectedOrigin = self.projectPoint(SCNVector3Zero)
         
         println("projectedOrigin: (\(projectedOrigin.x), \(projectedOrigin.y), \(projectedOrigin.z))")

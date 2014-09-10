@@ -28,18 +28,7 @@
 		1DFE59F219900D6900B8B3D3 /* KaleidoscopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE59F119900D6900B8B3D3 /* KaleidoscopeViewController.swift */; };
 		1DFE59F519900D6900B8B3D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1DFE59F319900D6900B8B3D3 /* Main.storyboard */; };
 		1DFE59F719900D6900B8B3D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DFE59F619900D6900B8B3D3 /* Images.xcassets */; };
-		1DFE5A0319900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE5A0219900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		1DFE59FD19900D6900B8B3D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1DFE59E019900D6900B8B3D3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1DFE59E719900D6900B8B3D3;
-			remoteInfo = Atk_Rnd_VisualToys;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrequencyCounter.swift; sourceTree = "<group>"; };
@@ -66,20 +55,10 @@
 		1DFE59F119900D6900B8B3D3 /* KaleidoscopeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KaleidoscopeViewController.swift; sourceTree = "<group>"; };
 		1DFE59F419900D6900B8B3D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1DFE59F619900D6900B8B3D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		1DFE59FC19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Atk_Rnd_VisualToysTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1DFE5A0119900D6900B8B3D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1DFE5A0219900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atk_Rnd_VisualToysTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		1DFE59E519900D6900B8B3D3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1DFE59F919900D6900B8B3D3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -172,7 +151,6 @@
 			isa = PBXGroup;
 			children = (
 				1DFE59EA19900D6900B8B3D3 /* Atk_Rnd_VisualToys */,
-				1DFE59FF19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests */,
 				1DFE59E919900D6900B8B3D3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -182,7 +160,6 @@
 			children = (
 				1DFE59E819900D6900B8B3D3 /* KaleidoKam
 .app */,
-				1DFE59FC19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -209,23 +186,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1DFE59FF19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests */ = {
-			isa = PBXGroup;
-			children = (
-				1DFE5A0219900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.swift */,
-				1DFE5A0019900D6900B8B3D3 /* Supporting Files */,
-			);
-			path = Atk_Rnd_VisualToysTests;
-			sourceTree = "<group>";
-		};
-		1DFE5A0019900D6900B8B3D3 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				1DFE5A0119900D6900B8B3D3 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -247,24 +207,6 @@
 .app */;
 			productType = "com.apple.product-type.application";
 		};
-		1DFE59FB19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1DFE5A0919900D6900B8B3D3 /* Build configuration list for PBXNativeTarget "Atk_Rnd_VisualToysTests" */;
-			buildPhases = (
-				1DFE59F819900D6900B8B3D3 /* Sources */,
-				1DFE59F919900D6900B8B3D3 /* Frameworks */,
-				1DFE59FA19900D6900B8B3D3 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1DFE59FE19900D6900B8B3D3 /* PBXTargetDependency */,
-			);
-			name = Atk_Rnd_VisualToysTests;
-			productName = Atk_Rnd_VisualToysTests;
-			productReference = 1DFE59FC19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -276,10 +218,6 @@
 				TargetAttributes = {
 					1DFE59E719900D6900B8B3D3 = {
 						CreatedOnToolsVersion = 6.0;
-					};
-					1DFE59FB19900D6900B8B3D3 = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = 1DFE59E719900D6900B8B3D3;
 					};
 				};
 			};
@@ -297,7 +235,6 @@
 			projectRoot = "";
 			targets = (
 				1DFE59E719900D6900B8B3D3 /* Atk_Rnd_VisualToys */,
-				1DFE59FB19900D6900B8B3D3 /* Atk_Rnd_VisualToysTests */,
 			);
 		};
 /* End PBXProject section */
@@ -312,13 +249,6 @@
 				1DFE59F019900D6900B8B3D3 /* art.scnassets in Resources */,
 				1DFE59F519900D6900B8B3D3 /* Main.storyboard in Resources */,
 				1D62050619928E8E005DDBC9 /* Shader.vsh in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1DFE59FA19900D6900B8B3D3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,23 +278,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1DFE59F819900D6900B8B3D3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1DFE5A0319900D6900B8B3D3 /* Atk_Rnd_VisualToysTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		1DFE59FE19900D6900B8B3D3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1DFE59E719900D6900B8B3D3 /* Atk_Rnd_VisualToys */;
-			targetProxy = 1DFE59FD19900D6900B8B3D3 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1DFE59F319900D6900B8B3D3 /* Main.storyboard */ = {
@@ -464,6 +378,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "KaleidoKam\n";
 				TARGETED_DEVICE_FAMILY = 2;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -476,40 +391,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "KaleidoKam\n";
 				TARGETED_DEVICE_FAMILY = 2;
-			};
-			name = Release;
-		};
-		1DFE5A0A19900D6900B8B3D3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = Atk_Rnd_VisualToysTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Atk_Rnd_VisualToys.app/Atk_Rnd_VisualToys";
-			};
-			name = Debug;
-		};
-		1DFE5A0B19900D6900B8B3D3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = Atk_Rnd_VisualToysTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Atk_Rnd_VisualToys.app/Atk_Rnd_VisualToys";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -530,15 +412,6 @@
 			buildConfigurations = (
 				1DFE5A0719900D6900B8B3D3 /* Debug */,
 				1DFE5A0819900D6900B8B3D3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1DFE5A0919900D6900B8B3D3 /* Build configuration list for PBXNativeTarget "Atk_Rnd_VisualToysTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1DFE5A0A19900D6900B8B3D3 /* Debug */,
-				1DFE5A0B19900D6900B8B3D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

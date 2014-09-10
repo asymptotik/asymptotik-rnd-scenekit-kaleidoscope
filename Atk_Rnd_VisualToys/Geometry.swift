@@ -20,7 +20,7 @@ class Geometry {
         println("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
         
         let r:Float = 1.0;
-        let tri_scale:Float = 2.0; //(float)randInt(120, 400);
+        let tri_scale:Float = 1.0;
         
         var co:Float = Float(cos(M_PI/3.0) * Double(r)); //0.5
         var si:Float = Float(sin(M_PI/3.0) * Double(r)); //0.86

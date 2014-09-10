@@ -32,6 +32,10 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     private weak var settingsViewController:KaleidoscopeSettingsViewController? = nil
     
+    var textureRotation:GLfloat = 0.0
+    var textureRotationSpeed:GLfloat = 0.1
+    var rotateTexture = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -76,22 +80,26 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         // create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
-        lightNode.light.type = SCNLightTypeOmni
+        lightNode.light!.type = SCNLightTypeOmni
         lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
         scene.rootNode.addChildNode(lightNode)
         
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
-        ambientLightNode.light.type = SCNLightTypeAmbient
-        ambientLightNode.light.color = UIColor.darkGrayColor()
+        ambientLightNode.light!.type = SCNLightTypeAmbient
+        ambientLightNode.light!.color = UIColor.darkGrayColor()
         scene.rootNode.addChildNode(ambientLightNode)
         
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
         let gestureRecognizers = NSMutableArray()
         gestureRecognizers.addObject(tapGesture)
-        gestureRecognizers.addObjectsFromArray(scnView.gestureRecognizers)
+        
+        if let recognizers = scnView.gestureRecognizers {
+            gestureRecognizers.addObjectsFromArray(recognizers)
+        }
+        
         scnView.gestureRecognizers = gestureRecognizers
         
         for controller in self.childViewControllers {
@@ -123,7 +131,7 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         let minEx = extents.min
         let maxEx = extents.max
         
-        let scene = scnView.scene
+        let scene = scnView.scene!
         
         var sphereCenterNode = createSphereNode(UIColor.redColor())
         sphereCenterNode.position = SCNVector3Make(0.0, 0.0, 0.0)
@@ -144,12 +152,12 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         if !hasMirror {
             //createCorners()
             
-            let scnView = self.view as SCNView
-            let scene = scnView.scene
+            let scnView:SCNView = self.view as SCNView
+            let scene = scnView.scene!
             
             let triNode = SCNNode()
             
-            var geometry = Geometry.createKaleidoscopeMirrorWithIsoscelesTriangles(scnView)
+            var geometry = Geometry.createKaleidoscopeMirrorWithEquilateralTriangles(scnView)
             triNode.geometry = geometry
             triNode.position = SCNVector3(x: 0, y: 0, z: 0)
             
@@ -213,8 +221,8 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         var program = SCNProgram()
         var vertexShaderURL = NSBundle.mainBundle().URLForResource("Shader", withExtension: "vsh")
         var fragmentShaderURL = NSBundle.mainBundle().URLForResource("Shader", withExtension: "fsh")
-        var vertexShaderSource = NSString(contentsOfURL: vertexShaderURL, encoding: NSUTF8StringEncoding, error: nil)
-        var fragmentShaderSource = NSString(contentsOfURL: fragmentShaderURL, encoding: NSUTF8StringEncoding, error: nil)
+        var vertexShaderSource = NSString(contentsOfURL: vertexShaderURL!, encoding: NSUTF8StringEncoding, error: nil)
+        var fragmentShaderSource = NSString(contentsOfURL: fragmentShaderURL!, encoding: NSUTF8StringEncoding, error: nil)
         
         program.vertexShader = vertexShaderSource
         program.fragmentShader = fragmentShaderSource
@@ -238,15 +246,19 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         material.doubleSided = true
         material.handleBindingOfSymbol("SamplerY", usingBlock: {
             (programId:UInt32, location:UInt32, node:SCNNode!, renderer:SCNRenderer!) -> Void in
-                //NSLog("handleBindingOfSymbol: SamplerY")
                 glUniform1i(GLint(location), 0)
             }
         )
         
         material.handleBindingOfSymbol("SamplerUV", usingBlock: {
             (programId:UInt32, location:UInt32, node:SCNNode!, renderer:SCNRenderer!) -> Void in
-                //NSLog("handleBindingOfSymbol: SamplerUY")
                glUniform1i(GLint(location), 1)
+            }
+        )
+        
+        material.handleBindingOfSymbol("TexRotation", usingBlock: {
+            (programId:UInt32, location:UInt32, node:SCNNode!, renderer:SCNRenderer!) -> Void in
+            glUniform1f(GLint(location), self.textureRotation)
             }
         )
         
@@ -266,15 +278,30 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
     }
     
+    private var _lastRenderTime: NSTimeInterval = 0.0
+    func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
+        
+        if(_lastRenderTime > 0.0) {
+            if self.rotateTexture {
+                self.textureRotation += self.textureRotationSpeed * Float(time - _lastRenderTime)
+            }
+            else {
+                self.textureRotation = 0.0
+            }
+        }
+        
+        _lastRenderTime = time;
+    }
+    
     func handleTap(gestureRecognize: UIGestureRecognizer) {
 
         // retrieve the SCNView
-        let scnView = self.view as SCNView
+        let scnView:SCNView = self.view as SCNView
         
         // check what nodes are tapped
         let viewPoint = gestureRecognize.locationInView(scnView)
         
-        var camera = scnView.pointOfView.camera
+        var camera = scnView.pointOfView!.camera
         
         let projectedOrigin = scnView.projectPoint(SCNVector3Zero)
         let vpWithZ = SCNVector3Make(Float(viewPoint.x), Float(viewPoint.y), projectedOrigin.z)
@@ -289,22 +316,27 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         self.stopBreathing()
         
-        let scnView = self.view as SCNView
-        var mirrorNode = scnView.scene.rootNode.childNodeWithName("mirrors", recursively: false)
+        let scnView:SCNView = self.view as SCNView
+        var mirrorNode = scnView.scene?.rootNode.childNodeWithName("mirrors", recursively: false)
         
-        var breatheAction = SCNAction.repeatActionForever(SCNAction.sequence(
-            [
-                SCNAction.scaleTo(depth, duration: duration/2.0),
-                SCNAction.scaleTo(1.0, duration: duration/2.0),
-            ]))
+        if let mirrorNode = mirrorNode {
+            var breatheAction = SCNAction.repeatActionForever(SCNAction.sequence(
+                [
+                    SCNAction.scaleTo(depth, duration: duration/2.0),
+                    SCNAction.scaleTo(1.0, duration: duration/2.0),
+                ]))
 
-        mirrorNode.runAction(breatheAction, forKey: "breatheAction")
+            mirrorNode.runAction(breatheAction, forKey: "breatheAction")
+        }
     }
 
     func stopBreathing() {
         let scnView = self.view as SCNView
-        var mirrorNode = scnView.scene.rootNode.childNodeWithName("mirrors", recursively: false)
-        mirrorNode.removeActionForKey("breatheAction")
+        var mirrorNode = scnView.scene?.rootNode.childNodeWithName("mirrors", recursively: false)
+        
+        if let mirrorNode = mirrorNode {
+            mirrorNode.removeActionForKey("breatheAction")
+        }
     }
 
     var isUsingFrontFacingCamera:Bool {

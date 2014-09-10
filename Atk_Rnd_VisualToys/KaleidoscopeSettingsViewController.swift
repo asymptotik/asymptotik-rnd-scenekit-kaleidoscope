@@ -20,6 +20,9 @@ class KaleidoscopeSettingsViewController: UIViewController {
     
     @IBOutlet weak var cameraZoomSlider: UISlider!
     
+    @IBOutlet weak var rotateTextureSwitch: UISwitch!
+    @IBOutlet weak var textureRotationSpeedSlider: UISlider!
+    
     override func viewDidLoad() {
     }
     
@@ -68,8 +71,17 @@ class KaleidoscopeSettingsViewController: UIViewController {
         self.kaleidoscopeViewController.zoom = CGFloat(sender.value)
     }
     
+    @IBAction func rotateTextureSwitchValueChanged(sender: UISwitch) {
+        self.kaleidoscopeViewController.rotateTexture = sender.on
+    }
+    
+    @IBAction func textureRotationSpeedValueChanged(sender: UISlider) {
+        self.kaleidoscopeViewController.textureRotationSpeed = sender.value
+    }
+    
     func updateCameraSettings() {
         self.cameraZoomSlider.maximumValue = Float(self.kaleidoscopeViewController.maxZoom)
         self.cameraZoomSlider.value = Float(self.kaleidoscopeViewController.zoom)
+        self.textureRotationSpeedSlider.value = self.kaleidoscopeViewController.textureRotationSpeed
     }
 }
