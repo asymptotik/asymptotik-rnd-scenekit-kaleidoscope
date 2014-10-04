@@ -57,10 +57,10 @@ class KaleidoscopeSettingsViewController: UIViewController {
     
     @IBAction func cameraSwitchValueChanged(sender: UISwitch) {
         if cameraSwitch.on {
-            cameraLabel.text = "Face Exploration"
+            cameraLabel.text = "Face"
         }
         else {
-            cameraLabel.text = "Space Exploration"
+            cameraLabel.text = "Space"
         }
         
         self.kaleidoscopeViewController.isUsingFrontFacingCamera = cameraSwitch.on

@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D0D8A1919D7477A00C49211 /* CVReturnExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0D8A1819D7477A00C49211 /* CVReturnExtensions.swift */; };
+		1D0D8A1B19D75E5000C49211 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0D8A1A19D75E5000C49211 /* Async.swift */; };
+		1D0D8A8919DA0B1600C49211 /* OpenGlUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0D8A8819DA0B1600C49211 /* OpenGlUtils.swift */; };
+		1D0D8A8B19DA22BD00C49211 /* EAGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0D8A8A19DA22BD00C49211 /* EAGLView.swift */; };
+		1D0D8A8D19DA2F8700C49211 /* AtkSCNView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0D8A8C19DA2F8700C49211 /* AtkSCNView.swift */; };
+		1D0D8A8F19DA489700C49211 /* SCNMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0D8A8E19DA489700C49211 /* SCNMath.swift */; };
+		1D0D8A9219DA54E200C49211 /* PassthroughShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 1D0D8A9019DA54E200C49211 /* PassthroughShader.fsh */; };
+		1D0D8A9619DA550700C49211 /* PassthroughShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 1D0D8A9419DA550700C49211 /* PassthroughShader.vsh */; };
 		1D4E54A019940E9600E6A82C /* FrequencyCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */; };
 		1D4E54A21994178100E6A82C /* ElapsedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E54A11994178100E6A82C /* ElapsedTimer.swift */; };
 		1D4E54A61995491700E6A82C /* KaleidoscopeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4E54A51995491700E6A82C /* KaleidoscopeSettingsViewController.swift */; };
@@ -23,6 +31,10 @@
 		1DA51AA1199077E10048BD54 /* SCNVector3Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA51AA0199077E10048BD54 /* SCNVector3Extensions.swift */; };
 		1DA51AA6199152550048BD54 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA51AA5199152550048BD54 /* Vector.swift */; };
 		1DA51AA81991642C0048BD54 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */; };
+		1DC1D8E319DA7F4F00C86F3A /* ScreenTextureQuad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC1D8E219DA7F4F00C86F3A /* ScreenTextureQuad.swift */; };
+		1DC1D91A19DA8A8B00C86F3A /* GLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DC1D91919DA8A8B00C86F3A /* GLProgram.m */; };
+		1DC1D91C19DAAA4D00C86F3A /* TmpTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC1D91B19DAAA4D00C86F3A /* TmpTexture.swift */; };
+		1DF7200919D0C284002EDF59 /* FrameBufferVideoRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7200819D0C284002EDF59 /* FrameBufferVideoRecorder.swift */; };
 		1DFE59EE19900D6900B8B3D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE59ED19900D6900B8B3D3 /* AppDelegate.swift */; };
 		1DFE59F019900D6900B8B3D3 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DFE59EF19900D6900B8B3D3 /* art.scnassets */; };
 		1DFE59F219900D6900B8B3D3 /* KaleidoscopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE59F119900D6900B8B3D3 /* KaleidoscopeViewController.swift */; };
@@ -31,6 +43,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D0D8A1819D7477A00C49211 /* CVReturnExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVReturnExtensions.swift; sourceTree = "<group>"; };
+		1D0D8A1A19D75E5000C49211 /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Async.swift; sourceTree = "<group>"; };
+		1D0D8A8819DA0B1600C49211 /* OpenGlUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenGlUtils.swift; sourceTree = "<group>"; };
+		1D0D8A8A19DA22BD00C49211 /* EAGLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAGLView.swift; sourceTree = "<group>"; };
+		1D0D8A8C19DA2F8700C49211 /* AtkSCNView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtkSCNView.swift; sourceTree = "<group>"; };
+		1D0D8A8E19DA489700C49211 /* SCNMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCNMath.swift; sourceTree = "<group>"; };
+		1D0D8A9019DA54E200C49211 /* PassthroughShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PassthroughShader.fsh; sourceTree = "<group>"; };
+		1D0D8A9419DA550700C49211 /* PassthroughShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PassthroughShader.vsh; sourceTree = "<group>"; };
 		1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrequencyCounter.swift; sourceTree = "<group>"; };
 		1D4E54A11994178100E6A82C /* ElapsedTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElapsedTimer.swift; sourceTree = "<group>"; };
 		1D4E54A51995491700E6A82C /* KaleidoscopeSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KaleidoscopeSettingsViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +67,12 @@
 		1DA51AA0199077E10048BD54 /* SCNVector3Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCNVector3Extensions.swift; sourceTree = "<group>"; };
 		1DA51AA5199152550048BD54 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
 		1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		1DC1D8E219DA7F4F00C86F3A /* ScreenTextureQuad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenTextureQuad.swift; sourceTree = "<group>"; };
+		1DC1D91719DA8A8B00C86F3A /* Atk_Rnd_VisualToys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Atk_Rnd_VisualToys-Bridging-Header.h"; sourceTree = "<group>"; };
+		1DC1D91819DA8A8B00C86F3A /* GLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLProgram.h; sourceTree = "<group>"; };
+		1DC1D91919DA8A8B00C86F3A /* GLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLProgram.m; sourceTree = "<group>"; };
+		1DC1D91B19DAAA4D00C86F3A /* TmpTexture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmpTexture.swift; sourceTree = "<group>"; };
+		1DF7200819D0C284002EDF59 /* FrameBufferVideoRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameBufferVideoRecorder.swift; sourceTree = "<group>"; };
 		1DFE59E819900D6900B8B3D3 /* KaleidoKam
 .app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KaleidoKam\n.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DFE59EC19900D6900B8B3D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -91,6 +117,8 @@
 			children = (
 				1D62050319928E8E005DDBC9 /* Shader.fsh */,
 				1D62050419928E8E005DDBC9 /* Shader.vsh */,
+				1D0D8A9019DA54E200C49211 /* PassthroughShader.fsh */,
+				1D0D8A9419DA550700C49211 /* PassthroughShader.vsh */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -108,6 +136,7 @@
 		1DA51A9F199077A10048BD54 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1D0D8A1819D7477A00C49211 /* CVReturnExtensions.swift */,
 				1DA51AA0199077E10048BD54 /* SCNVector3Extensions.swift */,
 				1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */,
 				1DA3F6F319918F4A004B2681 /* SCNMatrix4Extensions.swift */,
@@ -128,13 +157,24 @@
 		1DA51AA3199152370048BD54 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				1DC1D8E219DA7F4F00C86F3A /* ScreenTextureQuad.swift */,
+				1DF7200819D0C284002EDF59 /* FrameBufferVideoRecorder.swift */,
+				1D6F67B01995729A00D61D9C /* VideoCaptureBuffer.swift */,
+				1D6F67AC1995707400D61D9C /* Geometry.swift */,
+				1DC1D91B19DAAA4D00C86F3A /* TmpTexture.swift */,
 				1D9A299519932F5B00854CB4 /* Containers */,
 				1DA51AA4199152440048BD54 /* Math */,
+				1DA51A9F199077A10048BD54 /* Extensions */,
+				1D0D8A1A19D75E5000C49211 /* Async.swift */,
+				1DC1D91819DA8A8B00C86F3A /* GLProgram.h */,
+				1DC1D91919DA8A8B00C86F3A /* GLProgram.m */,
 				1D9A299A1993491500854CB4 /* LockHandle.swift */,
 				1D4E549F19940E9600E6A82C /* FrequencyCounter.swift */,
 				1D4E54A11994178100E6A82C /* ElapsedTimer.swift */,
-				1D6F67AC1995707400D61D9C /* Geometry.swift */,
-				1D6F67B01995729A00D61D9C /* VideoCaptureBuffer.swift */,
+				1D0D8A8819DA0B1600C49211 /* OpenGlUtils.swift */,
+				1D0D8A8A19DA22BD00C49211 /* EAGLView.swift */,
+				1D0D8A8C19DA2F8700C49211 /* AtkSCNView.swift */,
+				1DC1D91719DA8A8B00C86F3A /* Atk_Rnd_VisualToys-Bridging-Header.h */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -143,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				1DA51AA5199152550048BD54 /* Vector.swift */,
+				1D0D8A8E19DA489700C49211 /* SCNMath.swift */,
 			);
 			name = Math;
 			sourceTree = "<group>";
@@ -172,7 +213,6 @@
 				1D62050219928E59005DDBC9 /* Shaders */,
 				1DA51AA3199152370048BD54 /* Components */,
 				1DA51AA2199143550048BD54 /* Resources */,
-				1DA51A9F199077A10048BD54 /* Extensions */,
 				1DFE59EB19900D6900B8B3D3 /* Supporting Files */,
 			);
 			path = Atk_Rnd_VisualToys;
@@ -245,6 +285,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D62050519928E8E005DDBC9 /* Shader.fsh in Resources */,
+				1D0D8A9619DA550700C49211 /* PassthroughShader.vsh in Resources */,
+				1D0D8A9219DA54E200C49211 /* PassthroughShader.fsh in Resources */,
 				1DFE59F719900D6900B8B3D3 /* Images.xcassets in Resources */,
 				1DFE59F019900D6900B8B3D3 /* art.scnassets in Resources */,
 				1DFE59F519900D6900B8B3D3 /* Main.storyboard in Resources */,
@@ -259,21 +301,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D0D8A8D19DA2F8700C49211 /* AtkSCNView.swift in Sources */,
 				1DA51AA1199077E10048BD54 /* SCNVector3Extensions.swift in Sources */,
+				1DC1D91A19DA8A8B00C86F3A /* GLProgram.m in Sources */,
+				1DC1D91C19DAAA4D00C86F3A /* TmpTexture.swift in Sources */,
 				1D9A299419932B3000854CB4 /* RecycleContainer.swift in Sources */,
 				1D4E54A61995491700E6A82C /* KaleidoscopeSettingsViewController.swift in Sources */,
 				1D9A299B1993491500854CB4 /* LockHandle.swift in Sources */,
 				1DFE59F219900D6900B8B3D3 /* KaleidoscopeViewController.swift in Sources */,
+				1D0D8A8F19DA489700C49211 /* SCNMath.swift in Sources */,
+				1DF7200919D0C284002EDF59 /* FrameBufferVideoRecorder.swift in Sources */,
 				1D9A299719932F7000854CB4 /* Queue.swift in Sources */,
 				1DA51AA6199152550048BD54 /* Vector.swift in Sources */,
+				1D0D8A8B19DA22BD00C49211 /* EAGLView.swift in Sources */,
 				1D6F67AD1995707400D61D9C /* Geometry.swift in Sources */,
+				1DC1D8E319DA7F4F00C86F3A /* ScreenTextureQuad.swift in Sources */,
 				1D6F67B11995729A00D61D9C /* VideoCaptureBuffer.swift in Sources */,
 				1DFE59EE19900D6900B8B3D3 /* AppDelegate.swift in Sources */,
 				1DA3F6F419918F4A004B2681 /* SCNMatrix4Extensions.swift in Sources */,
 				1D9A299919933B5300854CB4 /* CircularQueue.swift in Sources */,
 				1D4E54A21994178100E6A82C /* ElapsedTimer.swift in Sources */,
+				1D0D8A1B19D75E5000C49211 /* Async.swift in Sources */,
 				1D6F67AF199570F700D61D9C /* SCNViewExtensions.swift in Sources */,
 				1DA51AA81991642C0048BD54 /* UIColorExtensions.swift in Sources */,
+				1D0D8A1919D7477A00C49211 /* CVReturnExtensions.swift in Sources */,
+				1D0D8A8919DA0B1600C49211 /* OpenGlUtils.swift in Sources */,
 				1D4E54A019940E9600E6A82C /* FrequencyCounter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,6 +382,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -365,6 +418,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -374,10 +428,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Atk_Rnd_VisualToys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "KaleidoKam\n";
-				TARGETED_DEVICE_FAMILY = 2;
+				SWIFT_OBJC_BRIDGING_HEADER = "Atk_Rnd_VisualToys/Atk_Rnd_VisualToys-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -387,10 +444,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Atk_Rnd_VisualToys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "KaleidoKam\n";
-				TARGETED_DEVICE_FAMILY = 2;
+				SWIFT_OBJC_BRIDGING_HEADER = "Atk_Rnd_VisualToys/Atk_Rnd_VisualToys-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;

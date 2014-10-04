@@ -556,6 +556,166 @@ class Geometry {
         return geo
     }
     
+    class func createQuad(view:SCNView) -> SCNGeometry {
+        
+        let extents = view.getExtents()
+        let minEx   = extents.min
+        let maxEx   = extents.max
+        
+        // Vertices
+        var vertices:[SCNVector3] = [
+            SCNVector3Make(minEx.x, maxEx.y, 0.0),
+            SCNVector3Make(minEx.x, minEx.y, 0.0),
+            SCNVector3Make(maxEx.x, maxEx.y, 0.0),
+            SCNVector3Make(maxEx.x, minEx.y, 0.0)
+        ]
+        
+        let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
+        var vertexSource = SCNGeometrySource(data: vertexData,
+            semantic: SCNGeometrySourceSemanticVertex,
+            vectorCount: vertices.count,
+            floatComponents: true,
+            componentsPerVector: 3,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(SCNVector3))
+        
+        // Normals
+        var normals:[SCNVector3] = [
+            SCNVector3Make(0.0, 0.0, 1.0),
+            SCNVector3Make(0.0, 0.0, 1.0),
+            SCNVector3Make(0.0, 0.0, 1.0),
+            SCNVector3Make(0.0, 0.0, 1.0)
+        ]
+        
+        let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
+        var normalSource = SCNGeometrySource(data: normalData,
+            semantic: SCNGeometrySourceSemanticNormal,
+            vectorCount: normals.count,
+            floatComponents: true,
+            componentsPerVector: 3,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(SCNVector3))
+        
+        // Texture
+        var uvs:[Vector2] = [
+            Vector2Make(0.0, 1.0),
+            Vector2Make(1.0, 1.0),
+            Vector2Make(0.0, 0.0),
+            Vector2Make(1.0, 0.0)
+        ]
+        
+        let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
+        var uvSource = SCNGeometrySource(data: uvData,
+            semantic: SCNGeometrySourceSemanticTexcoord,
+            vectorCount: uvs.count,
+            floatComponents: true,
+            componentsPerVector: 2,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(Vector2))
+        
+        // Indexes
+        var indices:[CInt] = [0, 1, 2, 2, 1, 3]
+        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        var indexElement = SCNGeometryElement(
+            data: indexData,
+            primitiveType: .Triangles,
+            primitiveCount: 2,
+            bytesPerIndex: sizeof(CInt)
+        )
+        
+        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: [indexElement])
+        
+        let me2 = UIImage(named: "me2")
+        
+        // material
+        var material = SCNMaterial()
+        material.diffuse.contents  = me2
+        material.doubleSided = true
+        material.shininess = 1.0;
+        geo.materials = [material];
+        
+        return geo
+    }
+    
+    class func createUnitQuad(view:SCNView) -> SCNGeometry {
+        
+        let extents = view.getExtents()
+        let minEx   = extents.min
+        let maxEx   = extents.max
+        
+        // Vertices
+        var vertices:[SCNVector3] = [
+            SCNVector3Make(-1, 1, 0.0),
+            SCNVector3Make(-1, -1, 0.0),
+            SCNVector3Make(1, 1, 0.0),
+            SCNVector3Make(1, -1, 0.0)
+        ]
+        
+        let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
+        var vertexSource = SCNGeometrySource(data: vertexData,
+            semantic: SCNGeometrySourceSemanticVertex,
+            vectorCount: vertices.count,
+            floatComponents: true,
+            componentsPerVector: 3,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(SCNVector3))
+        
+        // Normals
+        var normals:[SCNVector3] = [
+            SCNVector3Make(0.0, 0.0, 1.0),
+            SCNVector3Make(0.0, 0.0, 1.0),
+            SCNVector3Make(0.0, 0.0, 1.0),
+            SCNVector3Make(0.0, 0.0, 1.0)
+        ]
+        
+        let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
+        var normalSource = SCNGeometrySource(data: normalData,
+            semantic: SCNGeometrySourceSemanticNormal,
+            vectorCount: normals.count,
+            floatComponents: true,
+            componentsPerVector: 3,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(SCNVector3))
+        
+        // Texture
+        var uvs:[Vector2] = [
+            Vector2Make(0.0, 1.0),
+            Vector2Make(1.0, 1.0),
+            Vector2Make(0.0, 0.0),
+            Vector2Make(1.0, 0.0)
+        ]
+        
+        let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
+        var uvSource = SCNGeometrySource(data: uvData,
+            semantic: SCNGeometrySourceSemanticTexcoord,
+            vectorCount: uvs.count,
+            floatComponents: true,
+            componentsPerVector: 2,
+            bytesPerComponent: sizeof(Float),
+            dataOffset: 0,
+            dataStride: sizeof(Vector2))
+        
+        // Indexes
+        var indices:[CInt] = [0, 1, 2, 2, 1, 3]
+        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        var indexElement = SCNGeometryElement(
+            data: indexData,
+            primitiveType: .Triangles,
+            primitiveCount: 2,
+            bytesPerIndex: sizeof(CInt)
+        )
+        
+        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: [indexElement])
+        
+        return geo
+    }
+
+    
     class func createTriangle(view:SCNView) -> SCNGeometry {
         
         // Vertices

@@ -15,7 +15,7 @@ import OpenGLES
 class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     var session: AVCaptureSession? = nil
-    var videoTextureCache: CVOpenGLESTextureCacheRef? = nil
+    var videoTextureCache: CVOpenGLESTextureCache? = nil
     
     var textureWidth: size_t = 0
     var textureHeight: size_t = 0
@@ -32,7 +32,7 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
     
     func initVideoCapture(context:EAGLContext) {
 
-        var textureCache: Unmanaged<CVOpenGLESTextureCacheRef>?
+        var textureCache: Unmanaged<CVOpenGLESTextureCache>?
         var err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, context, nil, &textureCache)
         self.videoTextureCache = textureCache?.takeUnretainedValue()
         
@@ -46,7 +46,7 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         self.session!.beginConfiguration()
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            self.session!.sessionPreset = AVCaptureSessionPreset640x480
+            self.session!.sessionPreset = AVCaptureSessionPresetPhoto
         } else {
             self.session!.sessionPreset = AVCaptureSessionPresetPhoto //AVCaptureSessionPresetiFrame960x540
         }
@@ -59,7 +59,7 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         }
         
         self.captureDeviceFormat = self.captureDevice!.activeFormat
-        
+
         var error:NSError? = nil
         var deviceInput:AVCaptureDeviceInput = AVCaptureDeviceInput.deviceInputWithDevice(self.captureDevice, error: &error) as AVCaptureDeviceInput
         
