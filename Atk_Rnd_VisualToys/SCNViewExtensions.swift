@@ -18,11 +18,11 @@ extension SCNView {
         
         let projectedOrigin = self.projectPoint(SCNVector3Zero)
         
-        println("projectedOrigin: (\(projectedOrigin.x), \(projectedOrigin.y), \(projectedOrigin.z))")
+        print("projectedOrigin: (\(projectedOrigin.x), \(projectedOrigin.y), \(projectedOrigin.z))")
         
-        var size = self.bounds.size
-        var min = self.unprojectPoint(SCNVector3Make(0.0, Float(size.height), projectedOrigin.z))
-        var max = self.unprojectPoint(SCNVector3Make(Float(size.width), 0.0, projectedOrigin.z))
+        let size = self.bounds.size
+        let min = self.unprojectPoint(SCNVector3Make(0.0, Float(size.height), projectedOrigin.z))
+        let max = self.unprojectPoint(SCNVector3Make(Float(size.width), 0.0, projectedOrigin.z))
         return (min, max)
     }
 }

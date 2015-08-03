@@ -73,8 +73,6 @@ class ScreenTextureQuad {
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), vertexBufferObject)
         glBufferData(GLenum(GL_ARRAY_BUFFER), sizeof(GLfloat)*verts.count, verts, GLenum(GL_STATIC_DRAW))
         
-        var size = GLsizei(sizeof(GLfloat) * 8)
-        
         glEnableVertexAttribArray(self.positionIndex)
         glVertexAttribPointer(self.positionIndex, GLint(3), GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(sizeof(GLfloat) * 8), ptr)
         glEnableVertexAttribArray(self.textureCoordinateIndex)

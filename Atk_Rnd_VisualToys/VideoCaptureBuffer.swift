@@ -32,15 +32,16 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
     
     func initVideoCapture(context:EAGLContext) {
 
-        var textureCache: Unmanaged<CVOpenGLESTextureCache>?
-        var err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, context, nil, &textureCache)
-        self.videoTextureCache = textureCache?.takeUnretainedValue()
+        var textureCache:CVOpenGLESTextureCache? = nil;
+        let err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, nil, context, nil, &textureCache)
         
-        if (err != kCVReturnSuccess.value)
+        if (err != kCVReturnSuccess)
         {
-            NSLog("Error at CVOpenGLESTextureCacheCreate %d", err);
+            NSLog("Error at CVOpenGLESTextureCacheCreate %@", CVReturn.stringValue(err));
             return;
         }
+        
+        self.videoTextureCache = textureCache
         
         self.session = AVCaptureSession()
         self.session!.beginConfiguration()
@@ -60,35 +61,40 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         
         self.captureDeviceFormat = self.captureDevice!.activeFormat
 
-        var error:NSError? = nil
-        var deviceInput:AVCaptureDeviceInput = AVCaptureDeviceInput.deviceInputWithDevice(self.captureDevice, error: &error) as AVCaptureDeviceInput
-        
-        if error != nil {
-            var alertView = UIAlertView(title: "Failed with error \(error?.code)", message: error?.localizedDescription, delegate: nil, cancelButtonTitle: "Dismiss")
-            alertView.show()
+        do {
+            let error:NSError? = nil
+            let deviceInput:AVCaptureDeviceInput = try AVCaptureDeviceInput(device: self.captureDevice)
+            
+            if error != nil {
+                let alertView = UIAlertView(title: "Failed with error \(error?.code)", message: error?.localizedDescription, delegate: nil, cancelButtonTitle: "Dismiss")
+                alertView.show()
+            }
+            
+            if self.session!.canAddInput(deviceInput) {
+                self.session!.addInput(deviceInput)
+            }
+            else {
+                NSLog("Error: Cannot add video capture device as input.");
+            }
+            
+            let dataOutput = AVCaptureVideoDataOutput()
+            dataOutput.alwaysDiscardsLateVideoFrames = true
+            dataOutput.videoSettings = [ kCVPixelBufferPixelFormatTypeKey: NSNumber(unsignedInt: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) ]
+            dataOutput.setSampleBufferDelegate(self, queue: self.videoBufferingDispatchQueue)
+            
+            if self.session!.canAddOutput(dataOutput) {
+                self.session!.addOutput(dataOutput)
+            }
+            else {
+                NSLog("Error: Cannot add video data capture device as output.");
+            }
+            
+            self.session!.commitConfiguration()
+            self.session!.startRunning()
+            }
+        catch _ {
+            NSLog("Error: Creating AVCaptureDeviceInput.");
         }
-        
-        if self.session!.canAddInput(deviceInput) {
-            self.session!.addInput(deviceInput)
-        }
-        else {
-            NSLog("Error: Cannot add video capture device as input.");
-        }
-        
-        var dataOutput = AVCaptureVideoDataOutput()
-        dataOutput.alwaysDiscardsLateVideoFrames = true
-        dataOutput.videoSettings = [ kCVPixelBufferPixelFormatTypeKey: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange ]
-        dataOutput.setSampleBufferDelegate(self, queue: self.videoBufferingDispatchQueue)
-        
-        if self.session!.canAddOutput(dataOutput) {
-            self.session!.addOutput(dataOutput)
-        }
-        else {
-            NSLog("Error: Cannot add video data capture device as output.");
-        }
-        
-        self.session!.commitConfiguration()
-        self.session!.startRunning()
     }
     
     private var _videoCaptureRate = FrequencyCounter();
@@ -108,7 +114,7 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
     }
     
     func cleanupTextures() {
-        CVOpenGLESTextureCacheFlush(self.videoTextureCache, 0)
+        CVOpenGLESTextureCacheFlush(self.videoTextureCache!, 0)
     }
     
     private var _videoFrameProcessingRate = FrequencyCounter();
@@ -116,7 +122,7 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         
         //NSLog("processNextVideoTexture");
         
-        var sampleBuffer:CMSampleBuffer? = self.videoBufferQueue.pop()
+        let sampleBuffer:CMSampleBuffer? = self.videoBufferQueue.pop()
         if sampleBuffer == nil && self.lumaTexture == nil && self.chromaTexture == nil {
             return
         }
@@ -130,14 +136,14 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         }
         
         var imageBuffer:CVImageBuffer? = nil
-        var err: CVReturn = kCVReturnSuccess.value
+        var err: CVReturn = kCVReturnSuccess
         
         if sampleBuffer != nil {
             
-            imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-            var pixelBuffer : CVPixelBuffer = Unmanaged<CVPixelBuffer>.fromOpaque(Unmanaged<CVImageBuffer>.passUnretained(imageBuffer!).toOpaque()).takeUnretainedValue()
-            var width = CVPixelBufferGetWidth(pixelBuffer)
-            var height = CVPixelBufferGetHeight(pixelBuffer)
+            imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer!)
+            let pixelBuffer : CVPixelBuffer = Unmanaged<CVPixelBuffer>.fromOpaque(Unmanaged<CVImageBuffer>.passUnretained(imageBuffer!).toOpaque()).takeUnretainedValue()
+            let width = CVPixelBufferGetWidth(pixelBuffer)
+            let height = CVPixelBufferGetHeight(pixelBuffer)
             
             self.textureWidth = width
             self.textureHeight = height
@@ -152,11 +158,11 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         glActiveTexture(GLenum(GL_TEXTURE0))
         
         if imageBuffer != nil {
-            var unmanagedLumaTexture:Unmanaged<CVOpenGLESTexture>? = nil
+            var unmanagedLumaTexture:CVOpenGLESTexture? = nil
             
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                self.videoTextureCache,
-                imageBuffer,
+                self.videoTextureCache!,
+                imageBuffer!,
                 nil,
                 GLenum(GL_TEXTURE_2D),
                 GL_RED_EXT,
@@ -167,14 +173,14 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
                 0,
                 &unmanagedLumaTexture)
             
-            self.lumaTexture = unmanagedLumaTexture?.takeRetainedValue()
+            self.lumaTexture = unmanagedLumaTexture
             
-            if (err != kCVReturnSuccess.value) {
+            if (err != kCVReturnSuccess) {
                 NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
             }
         }
         
-        glBindTexture(CVOpenGLESTextureGetTarget(self.lumaTexture), CVOpenGLESTextureGetName(self.lumaTexture));
+        glBindTexture(CVOpenGLESTextureGetTarget(self.lumaTexture!), CVOpenGLESTextureGetName(self.lumaTexture!));
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GL_CLAMP_TO_EDGE);
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GL_CLAMP_TO_EDGE);
         
@@ -183,11 +189,12 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         glActiveTexture(GLenum(GL_TEXTURE1))
         
         if imageBuffer != nil {
-            var unmanagedChromaTexture:Unmanaged<CVOpenGLESTexture>? = nil
+            
+            var unmanagedChromaTexture:CVOpenGLESTexture? = nil
             
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                self.videoTextureCache,
-                imageBuffer,
+                self.videoTextureCache!,
+                imageBuffer!,
                 nil,
                 GLenum(GL_TEXTURE_2D),
                 GL_RG_EXT,
@@ -198,14 +205,14 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
                 1,
                 &unmanagedChromaTexture)
             
-            self.chromaTexture = unmanagedChromaTexture?.takeRetainedValue()
+            self.chromaTexture = unmanagedChromaTexture
             
-            if (err != kCVReturnSuccess.value) {
+            if (err != kCVReturnSuccess) {
                 NSLog("Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
             }
         }
         
-        glBindTexture(CVOpenGLESTextureGetTarget(self.chromaTexture), CVOpenGLESTextureGetName(self.chromaTexture));
+        glBindTexture(CVOpenGLESTextureGetTarget(self.chromaTexture!), CVOpenGLESTextureGetName(self.chromaTexture!));
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_S), GL_CLAMP_TO_EDGE);
         glTexParameteri(GLenum(GL_TEXTURE_2D), GLenum(GL_TEXTURE_WRAP_T), GL_CLAMP_TO_EDGE);
     }
@@ -221,20 +228,24 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         }
     
         for device in AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) {
-            var captureDevice = device as AVCaptureDevice
+            let captureDevice = device as! AVCaptureDevice
             if captureDevice.position == desiredPosition {
                 session!.beginConfiguration()
                 
                 self.captureDeviceFormat = captureDevice.activeFormat
                 self.captureDevice = captureDevice
                 
-                var input = AVCaptureDeviceInput.deviceInputWithDevice(captureDevice, error: nil) as AVCaptureInput
-                for oldInput in session!.inputs {
-                    session!.removeInput(oldInput as AVCaptureInput)
+                do {
+                    let input = try AVCaptureDeviceInput(device: captureDevice)
+                    for oldInput in session!.inputs {
+                        session!.removeInput(oldInput as! AVCaptureInput)
+                    }
+                    session!.addInput(input)
+                    session!.commitConfiguration()
                 }
-                session!.addInput(input)
-                session!.commitConfiguration()
-                
+                catch _ {
+                    NSLog("Error: Creating AVCaptureDeviceInput.");
+                }
                 break
             }
         }
@@ -264,7 +275,11 @@ class VideoCaptureBuffer : NSObject, AVCaptureVideoDataOutputSampleBufferDelegat
         set {
             var value = newValue
             if self.captureDevice != nil && self.maxZoom > 0.0 {
-                self.captureDevice!.lockForConfiguration(nil)
+                do {
+                    try self.captureDevice!.lockForConfiguration()
+                } catch _ {
+                    NSLog("Error: lockForConfiguration.");
+                }
                 if newValue < 0.0 { value = 0.0 }
                 if newValue > self.maxZoom { value = self.maxZoom }
                 NSLog("Setting zom to: %f", value)

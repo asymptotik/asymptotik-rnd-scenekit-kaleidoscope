@@ -20,12 +20,12 @@ class AtkSCNView : EAGLView {
         set { self.renderer!.scene = newValue }
     }
     
-    required init(coder: NSCoder) {
+    required init?(coder: NSCoder) {
 
         super.init(coder: coder)
         
-        var ctx = self.context
-        self.renderer = SCNRenderer(context: &ctx, options: nil)
+        let ctx = self.context
+        self.renderer = SCNRenderer(context: ctx!, options: nil)
     }
     
     
@@ -50,7 +50,7 @@ class AtkSCNView : EAGLView {
         inv.y = inv.y * 2 - 1;
         inv.z = inv.z * 2 - 1;
     
-        outv = SCNMatrix4Mult(finalMatrix, inv)
+        outv = SCNMatrix4Mult(finalMatrix, vector: inv)
         
         if outv.w == 0.0 {
             return false

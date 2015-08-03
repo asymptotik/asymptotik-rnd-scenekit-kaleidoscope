@@ -53,8 +53,6 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     var screenTexture:ScreenTextureQuad?
     
-    var tmpTexture:TmpTexture?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -62,7 +60,7 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         let scene = SCNScene()
         
         // retrieve the SCNView
-        let scnView = self.view as SCNView
+        let scnView = self.view as! SCNView
         
         // set the scene to the view
         scnView.scene = scene
@@ -77,13 +75,13 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         scnView.backgroundColor = UIColor.blackColor()
 
         // Anti alias
-        //scnView.antialiasingMode = SCNAntialiasingMode.Multisampling4X
+        scnView.antialiasingMode = SCNAntialiasingMode.Multisampling4X
         
         // delegate to self
         scnView.delegate = self
 
         scene.rootNode.runAction(SCNAction.customActionWithDuration(5, actionBlock:{
-            (triNode:SCNNode!, elapsedTime:CGFloat) -> Void in
+            (triNode:SCNNode, elapsedTime:CGFloat) -> Void in
         }))
         
         // create and add a camera to the scene
@@ -98,21 +96,23 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
 
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+        cameraNode.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
         
         // add a tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-        let gestureRecognizers = NSMutableArray()
-        gestureRecognizers.addObject(tapGesture)
+        //let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+        //let pinchGesture = UIPinchGestureRecognizer(target: self, action: "handlePinch:")
+        //let panGesture = UIPanGestureRecognizer(target: self, action: "handlePan:")
+        //var gestureRecognizers:[AnyObject] = [tapGesture, pinchGesture, panGesture]
         
-        if let recognizers = scnView.gestureRecognizers {
-            gestureRecognizers.addObjectsFromArray(recognizers)
-        }
+        //if let recognizers = scnView.gestureRecognizers {
+        //    gestureRecognizers += recognizers
+        //}
         
-        scnView.gestureRecognizers = gestureRecognizers
+        //scnView.gestureRecognizers = gestureRecognizers
         
         for controller in self.childViewControllers {
             if controller.isKindOfClass(KaleidoscopeSettingsViewController) {
-                let settingsViewController = controller as KaleidoscopeSettingsViewController
+                let settingsViewController = controller as! KaleidoscopeSettingsViewController
                 settingsViewController.kaleidoscopeViewController = self
                 self.settingsViewController = settingsViewController
             }
@@ -121,8 +121,6 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         self.videoRecordingTmpUrl = NSURL(fileURLWithPath: (NSTemporaryDirectory().stringByAppendingPathComponent("video.mov")));
         self.screenTexture = ScreenTextureQuad()
         self.screenTexture!.initialize()
-        
-        self.tmpTexture = TmpTexture()
         
         OpenGlUtils.checkError("init")
     }
@@ -142,7 +140,7 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     func createSphereNode(color:UIColor) -> SCNNode {
         
         let sphere = SCNSphere()
-        var material = SCNMaterial()
+        let material = SCNMaterial()
         material.diffuse.contents  = color
         sphere.materials = [material];
         let sphereNode = SCNNode()
@@ -153,7 +151,7 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func createCorners() {
         
-        var scnView = self.view as SCNView
+        let scnView = self.view as! SCNView
         
         let extents = scnView.getExtents()
         let minEx = extents.min
@@ -161,31 +159,34 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         let scene = scnView.scene!
         
-        var sphereCenterNode = createSphereNode(UIColor.redColor())
+        let sphereCenterNode = createSphereNode(UIColor.redColor())
         sphereCenterNode.position = SCNVector3Make(0.0, 0.0, 0.0)
         scene.rootNode.addChildNode(sphereCenterNode)
         
-        var sphereLLNode = createSphereNode(UIColor.blueColor())
+        let sphereLLNode = createSphereNode(UIColor.blueColor())
         sphereLLNode.position = SCNVector3Make(minEx.x, minEx.y, 0.0)
         scene.rootNode.addChildNode(sphereLLNode)
         
-        var sphereURNode = createSphereNode(UIColor.greenColor())
+        let sphereURNode = createSphereNode(UIColor.greenColor())
         sphereURNode.position = SCNVector3Make(maxEx.x, maxEx.y, 0.0)
         scene.rootNode.addChildNode(sphereURNode)
     }
     
     private var _videoActionRate = FrequencyCounter();
-    func createMirror() {
+    func createMirror() -> Bool {
+        
+        var ret:Bool = false
         
         if !hasMirror {
             //createCorners()
             
-            let scnView:SCNView = self.view as SCNView
+            let scnView:SCNView = self.view as! SCNView
             let scene = scnView.scene!
             
             let triNode = SCNNode()
             
-            var geometry = Geometry.createKaleidoscopeMirrorWithEquilateralTriangles(scnView)
+            //let geometry = Geometry.createKaleidoscopeMirrorWithEquilateralTriangles(scnView)
+            let geometry = Geometry.createKaleidoscopeMirrorWithIsoscelesTriangles(scnView)
             //var geometry = Geometry.createSquare(scnView)
             triNode.geometry = geometry
             triNode.position = SCNVector3(x: 0, y: 0, z: 0)
@@ -194,13 +195,13 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
                 geometry.materials = [self.createVideoTextureMaterial()]
             }
             else if(self.textureSource == .Color) {
-                var material = SCNMaterial()
+                let material = SCNMaterial()
                 material.diffuse.contents = UIColor.randomColor()
                 geometry.materials = [material]
             }
             else if(self.textureSource == .Image) {
-                var me = UIImage(named: "me2")
-                var material = SCNMaterial()
+                let me = UIImage(named: "me2")
+                let material = SCNMaterial()
                 material.diffuse.contents = me
                 geometry.materials = [material]
             }
@@ -209,8 +210,8 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
             
             triNode.name = "mirrors"
 
-            var videoAction = SCNAction.customActionWithDuration(10000000000, actionBlock:{
-                (triNode:SCNNode!, elapsedTime:CGFloat) -> Void in
+            let videoAction = SCNAction.customActionWithDuration(10000000000, actionBlock:{
+                (triNode:SCNNode, elapsedTime:CGFloat) -> Void in
                 //NSLog("Running action: processNextVideoTexture")
                 
                 if self._videoActionRate.count == 0 {
@@ -224,37 +225,48 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
                 self.videoCapture.processNextVideoTexture()
             })
             
+            /*
             var swellAction = SCNAction.repeatActionForever(SCNAction.sequence(
                 [
                     SCNAction.scaleTo(1.01, duration: 1),
                     SCNAction.scaleTo(1.0, duration: 1),
                 ]))
-
-            var actions = SCNAction.group([videoAction])
+            */
+            
+            let actions = SCNAction.group([videoAction])
             
             triNode.runAction(actions)
          
             scene.rootNode.addChildNode(triNode)
             
             hasMirror = true
-            
-            if(self.textureSource == .Video) {
-                self.videoCapture.initVideoCapture(scnView.eaglContext)
-            }
+            ret = true
         }
+        
+        return ret;
     }
     
     func createVideoTextureMaterial() -> SCNMaterial {
         
-        var material = SCNMaterial()
-        var program = SCNProgram()
-        var vertexShaderURL = NSBundle.mainBundle().URLForResource("Shader", withExtension: "vsh")
-        var fragmentShaderURL = NSBundle.mainBundle().URLForResource("Shader", withExtension: "fsh")
-        var vertexShaderSource = NSString(contentsOfURL: vertexShaderURL!, encoding: NSUTF8StringEncoding, error: nil)
-        var fragmentShaderSource = NSString(contentsOfURL: fragmentShaderURL!, encoding: NSUTF8StringEncoding, error: nil)
+        let material = SCNMaterial()
+        let program = SCNProgram()
+        let vertexShaderURL = NSBundle.mainBundle().URLForResource("Shader", withExtension: "vsh")
+        let fragmentShaderURL = NSBundle.mainBundle().URLForResource("Shader", withExtension: "fsh")
+        var vertexShaderSource: NSString?
+        do {
+            vertexShaderSource = try NSString(contentsOfURL: vertexShaderURL!, encoding: NSUTF8StringEncoding)
+        } catch _ {
+            vertexShaderSource = nil
+        }
+        var fragmentShaderSource: NSString?
+        do {
+            fragmentShaderSource = try NSString(contentsOfURL: fragmentShaderURL!, encoding: NSUTF8StringEncoding)
+        } catch _ {
+            fragmentShaderSource = nil
+        }
         
-        program.vertexShader = vertexShaderSource
-        program.fragmentShader = fragmentShaderSource
+        program.vertexShader = vertexShaderSource as? String
+        program.fragmentShader = fragmentShaderSource as? String
         
         // Bind the position of the geometry and the model view projection
         // you would do the same for other geometry properties like normals
@@ -295,11 +307,11 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
 
     // SCNProgramDelegate
-    func program(program: SCNProgram!, handleError error: NSError!) {
+    func program(program: SCNProgram, handleError error: NSError) {
         NSLog("%@", error)
     }
     
-    func renderer(aRenderer: SCNSceneRenderer!, willRenderScene scene: SCNScene!, atTime time: NSTimeInterval) {
+    func renderer(aRenderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: NSTimeInterval) {
 
         if _renderCount >= 1 && self.recordingStatus == RecordingStatus.Recording {
             self.videoRecorder!.bindRenderTextureFramebuffer()
@@ -310,10 +322,16 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     // SCNSceneRendererDelegate
     private var _renderCount = 0
-    func renderer(aRenderer: SCNSceneRenderer!, didRenderScene scene: SCNScene!, atTime time: NSTimeInterval) {
+    func renderer(aRenderer: SCNSceneRenderer, didRenderScene scene: SCNScene, atTime time: NSTimeInterval) {
         
         if _renderCount == 1 {
             self.createMirror()
+            
+            if(self.textureSource == .Video) {
+                let scnView:SCNView = self.view as! SCNView
+                self.videoCapture.initVideoCapture(scnView.eaglContext!)
+            }
+            
             glGetIntegerv(GLenum(GL_FRAMEBUFFER_BINDING), &self.defaultFBO)
             NSLog("Default framebuffer: %d", self.defaultFBO)
         }
@@ -326,7 +344,7 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
             }
             
             if self.recordingStatus == RecordingStatus.Recording {
-                var scnView = self.view as SCNView
+               // var scnView = self.view as! SCNView
 
                 glFlush()
                 glFinish()
@@ -346,12 +364,17 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
             //glFinish()
             //glBindFramebuffer(GLenum(GL_FRAMEBUFFER), GLuint(self.defaultFBO))
             //self.screenTexture!.draw(self.videoRecorder!.target, name: self.videoRecorder!.name)
-            
-            //self.screenTexture!.draw(self.tmpTexture!.spriteTexture.target, name: self.tmpTexture!.spriteTexture.name)
-            
+
         }
 
         _renderCount++;
+        
+        /*
+        let scnView:SCNView = self.view as SCNView
+        var camera = scnView.pointOfView!.camera
+        
+        slideVelocity = Rotation.rotateCamera(scnView.pointOfView!, velocity: slideVelocity)
+        */
     }
     
     private var _lastRenderTime: NSTimeInterval = 0.0
@@ -368,21 +391,83 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         _lastRenderTime = time;
     }
-    
-    func handleTap(gestureRecognize: UIGestureRecognizer) {
 
+    func handleTap(recognizer: UIGestureRecognizer) {
+        
         // retrieve the SCNView
-        let scnView:SCNView = self.view as SCNView
+        let scnView:SCNView = self.view as! SCNView
         
         // check what nodes are tapped
-        let viewPoint = gestureRecognize.locationInView(scnView)
+        let viewPoint = recognizer.locationInView(scnView)
         
-        var camera = scnView.pointOfView!.camera
+        for var node:SCNNode? = scnView.pointOfView; node != nil; node = node?.parentNode {
+            NSLog("Node: " + node!.description)
+            NSLog("Node pivot: " + node!.pivot.description)
+            NSLog("Node constraints: \(node!.constraints?.description)")
+        }
         
         let projectedOrigin = scnView.projectPoint(SCNVector3Zero)
         let vpWithZ = SCNVector3Make(Float(viewPoint.x), Float(viewPoint.y), projectedOrigin.z)
-        var scenePoint = scnView.unprojectPoint(vpWithZ)
-        println("tapPoint: (\(viewPoint.x), \(viewPoint.y)) scenePoint: (\(scenePoint.x), \(scenePoint.y), \(scenePoint.z))")
+        let scenePoint = scnView.unprojectPoint(vpWithZ)
+        print("tapPoint: (\(viewPoint.x), \(viewPoint.y)) scenePoint: (\(scenePoint.x), \(scenePoint.y), \(scenePoint.z))")
+    }
+    
+    private var currentScale:Float = 1.0
+    private var lastScale:CGFloat = 1.0
+    func handlePinch(recognizer: UIPinchGestureRecognizer) {
+        
+        if recognizer.state == UIGestureRecognizerState.Began {
+            lastScale = recognizer.scale
+        } else if recognizer.state == UIGestureRecognizerState.Changed {
+            
+            let scnView:SCNView = self.view as! SCNView
+            let cameraNode = scnView.pointOfView!
+            let position = cameraNode.position
+            
+            var scale:Float = 1.0 - Float(recognizer.scale - lastScale)
+            scale = min(scale, 40.0 / currentScale)
+            scale = max(scale, 0.1 / currentScale)
+            
+            currentScale = scale
+            lastScale = recognizer.scale
+            
+            let z = max(0.02, position.z * scale)
+            
+            cameraNode.position.z = z
+        }
+    }
+    
+    var slideVelocity = CGPointMake(0.0, 0.0)
+    var cameraRot = CGPointMake(0.0, 0.0)
+    var panPoint = CGPointMake(0.0, 0.0)
+    
+    func handlePan(recognizer: UIPanGestureRecognizer) {
+        
+        if recognizer.state == UIGestureRecognizerState.Began {
+            panPoint = recognizer.locationInView(self.view)
+        } else if recognizer.state == UIGestureRecognizerState.Changed {
+            let pt = recognizer.locationInView(self.view)
+            cameraRot.x += (pt.x - panPoint.x) * CGFloat(M_PI / 180.0)
+            cameraRot.y += (pt.y - panPoint.y) * CGFloat(M_PI / 180.0)
+            panPoint = pt
+        }
+        
+        let x = Float(15 * sin(cameraRot.x))
+        let z = Float(15 * cos(cameraRot.x))
+        
+        slideVelocity = recognizer.velocityInView(self.view)
+        
+        let scnView:SCNView = self.view as! SCNView
+        let cameraNode = scnView.pointOfView!
+        cameraNode.position = SCNVector3Make(x, 0, z)
+        
+        var vect = SCNVector3Make(0, 0, 0) - cameraNode.position
+        vect.normalize()
+        let at1 = atan2(vect.x, vect.z)
+        let at2 = Float(atan2(0.0, -1.0))
+        let angle = at1 - at2
+        NSLog("Angle: %f", angle)
+        cameraNode.rotation = SCNVector4Make(0, 1, 0, angle)
     }
     
     //
@@ -392,11 +477,11 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         self.stopBreathing()
         
-        let scnView:SCNView = self.view as SCNView
-        var mirrorNode = scnView.scene?.rootNode.childNodeWithName("mirrors", recursively: false)
+        let scnView:SCNView = self.view as! SCNView
+        let mirrorNode = scnView.scene?.rootNode.childNodeWithName("mirrors", recursively: false)
         
         if let mirrorNode = mirrorNode {
-            var breatheAction = SCNAction.repeatActionForever(SCNAction.sequence(
+            let breatheAction = SCNAction.repeatActionForever(SCNAction.sequence(
                 [
                     SCNAction.scaleTo(depth, duration: duration/2.0),
                     SCNAction.scaleTo(1.0, duration: duration/2.0),
@@ -407,8 +492,8 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
 
     func stopBreathing() {
-        let scnView = self.view as SCNView
-        var mirrorNode = scnView.scene?.rootNode.childNodeWithName("mirrors", recursively: false)
+        let scnView = self.view as! SCNView
+        let mirrorNode = scnView.scene?.rootNode.childNodeWithName("mirrors", recursively: false)
         
         if let mirrorNode = mirrorNode {
             mirrorNode.removeActionForKey("breatheAction")
@@ -453,7 +538,7 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
         
         self.view.layoutIfNeeded()
-        var offset = (self.isSettingsOpen ? -(self.settingsWidthConstraint.constant) : 0)
+        let offset = (self.isSettingsOpen ? -(self.settingsWidthConstraint.constant) : 0)
         
         UIView.animateWithDuration(0.6, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: ({
             self.settingsOffsetConstraint.constant = offset
@@ -461,7 +546,7 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         }), completion: {
             (finished:Bool) -> Void in
             self.isSettingsOpen = !self.isSettingsOpen
-            let scnView = self.view as SCNView
+            let scnView = self.view as! SCNView
             scnView.allowsCameraControl = !self.isSettingsOpen
             
             if !self.isSettingsOpen {
@@ -488,17 +573,17 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         if(self.videoRecorder == nil) {
             // retrieve the SCNView
-            let scnView = self.view as SCNView
+            let scnView = self.view as! SCNView
             
-            var width:GLsizei = GLsizei(scnView.bounds.size.width * UIScreen.mainScreen().scale)
-            var height:GLsizei = GLsizei(scnView.bounds.size.height * UIScreen.mainScreen().scale)
+            let width:GLsizei = GLsizei(scnView.bounds.size.width * UIScreen.mainScreen().scale)
+            let height:GLsizei = GLsizei(scnView.bounds.size.height * UIScreen.mainScreen().scale)
             
             self.videoRecorder = FrameBufferVideoRecorder(movieUrl: self.videoRecordingTmpUrl,
                 width: width,
                 height: height)
             
-            self.videoRecorder!.initVideoRecorder(scnView.eaglContext)
-            self.videoRecorder!.generateFramebuffer(scnView.eaglContext)
+            self.videoRecorder!.initVideoRecorder(scnView.eaglContext!)
+            self.videoRecorder!.generateFramebuffer(scnView.eaglContext!)
         }
     }
     
@@ -509,15 +594,16 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     private func finishRecording() {
+        
         self.videoRecorder?.finish({ (status:FrameBufferVideoRecorderStatus) -> Void in
             
             NSLog("Video recorder finished with status: " + status.description);
             
             if(status == FrameBufferVideoRecorderStatus.Completed) {
                 
-                var fileManager: NSFileManager = NSFileManager.defaultManager()
+                let fileManager: NSFileManager = NSFileManager.defaultManager()
                 if fileManager.fileExistsAtPath(self.videoRecordingTmpUrl.path!) {
-                    UISaveVideoAtPathToSavedPhotosAlbum(self.videoRecordingTmpUrl.path, self, "video:didFinishSavingWithError:contextInfo:", nil)
+                    UISaveVideoAtPathToSavedPhotosAlbum(self.videoRecordingTmpUrl.path!, self, "video:didFinishSavingWithError:contextInfo:", nil)
                 }
                 else {
                     NSLog("File does not exist: " + self.videoRecordingTmpUrl.path!);
@@ -528,15 +614,21 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func video(videoPath:NSString, didFinishSavingWithError error:NSErrorPointer, contextInfo:UnsafeMutablePointer<Void>) {
         NSLog("Finished saving video")
+        self.videoRecorder = nil;
+        self.recordingStatus = RecordingStatus.Stopped
         self.deleteFile(self.videoRecordingTmpUrl)
     }
     
     func deleteFile(fileUrl:NSURL) {
-        var fileManager: NSFileManager = NSFileManager.defaultManager()
+        let fileManager: NSFileManager = NSFileManager.defaultManager()
         
         if fileManager.fileExistsAtPath(fileUrl.path!) {
             var error:NSError? = nil;
-            fileManager.removeItemAtURL(fileUrl, error: &error)
+            do {
+                try fileManager.removeItemAtURL(fileUrl)
+            } catch let error1 as NSError {
+                error = error1
+            }
             if(error != nil) {
                 NSLog("Error deleing file: %@ Error: %@", fileUrl, error!)
             }
@@ -544,45 +636,46 @@ class KaleidoscopeViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     func takeShot() {
-        var image = self.imageFromSceneKitView(self.view as SCNView)
+        let image = self.imageFromSceneKitView(self.view as! SCNView)
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
     }
 
     func imageFromSceneKitView(sceneKitView:SCNView) -> UIImage {
-        var w:UInt = UInt(sceneKitView.bounds.size.width * UIScreen.mainScreen().scale)
-        var h:UInt = UInt(sceneKitView.bounds.size.height * UIScreen.mainScreen().scale)
+        let w:Int = Int(sceneKitView.bounds.size.width * UIScreen.mainScreen().scale)
+        let h:Int = Int(sceneKitView.bounds.size.height * UIScreen.mainScreen().scale)
         
-        let myDataLength:UInt = w * h * UInt(4)
-        var buffer = UnsafeMutablePointer<CGFloat>(calloc(myDataLength, UInt(sizeof(CUnsignedChar))))
+        let myDataLength:Int = w * h * Int(4)
+        let buffer = UnsafeMutablePointer<CGFloat>(calloc(myDataLength, Int(sizeof(CUnsignedChar))))
         
         glReadPixels(0, 0, GLint(w), GLint(h), GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), buffer)
         
-        var provider = CGDataProviderCreateWithData(nil, buffer, UInt(myDataLength), nil)
+        let provider = CGDataProviderCreateWithData(nil, buffer, Int(myDataLength), nil)
         
-        var bitsPerComponent:UInt = 8
-        var bitsPerPixel:UInt = 32
-        var bytesPerRow:UInt = UInt(4) * UInt(w)
-        var colorSpaceRef = CGColorSpaceCreateDeviceRGB()
-        var bitmapInfo = CGBitmapInfo.ByteOrderDefault
-        var renderingIntent = kCGRenderingIntentDefault
+        let bitsPerComponent:Int = 8
+        let bitsPerPixel:Int = 32
+        let bytesPerRow:Int = 4 * w
+        let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo.ByteOrderDefault
+        let renderingIntent = CGColorRenderingIntent.RenderingIntentDefault
         
         // make the cgimage
-        var cgImage = CGImageCreate(UInt(w), UInt(h), bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, nil, false, renderingIntent)
-        return UIImage(CGImage: cgImage)
+        let decode:UnsafePointer<CGFloat> = nil;
+        let cgImage = CGImageCreate(w, h, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, decode, false, renderingIntent)
+        return UIImage(CGImage: cgImage!)
     }
 
     //
     // UIViewControlle overrides
     //
     override func shouldAutorotate() -> Bool {
-        return false
+        return true
     }
     
-    override func supportedInterfaceOrientations() -> Int {
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.toRaw())
+            return UIInterfaceOrientationMask.AllButUpsideDown
         } else {
-            return Int(UIInterfaceOrientationMask.All.toRaw())
+            return UIInterfaceOrientationMask.All
         }
     }
     

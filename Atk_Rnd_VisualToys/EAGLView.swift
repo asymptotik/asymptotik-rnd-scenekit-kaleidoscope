@@ -20,33 +20,30 @@ class EAGLView : UIView {
     private(set) var defaultFramebuffer:GLuint = 0
     private(set) var colorRenderbuffer:GLuint = 0
     private(set) var depthRenderbuffer:GLuint = 0
-    private(set) var context:EAGLContext? = nil
+    private(set) var context:EAGLContext? = nil {
+        willSet {
+            self.deleteFramebuffer()
+        }
+    }
     
     var eaglLayer:CAEAGLLayer {
-        get { return self.layer as CAEAGLLayer }
+        get { return self.layer as! CAEAGLLayer }
     }
     
     override class func layerClass() -> AnyClass {
         return CAEAGLLayer.classForCoder()
     }
 
-    required init(coder:NSCoder) {
+    required init?(coder:NSCoder) {
         super.init(coder:coder)
         
-        var eaglLayer = self.eaglLayer
+        let eaglLayer = self.eaglLayer
         
         eaglLayer.opaque = true
         eaglLayer.drawableProperties = [
             kEAGLDrawablePropertyRetainedBacking: NSNumber(bool:false),
             kEAGLDrawablePropertyColorFormat: kEAGLColorFormatRGBA8
         ]
-    }
-    
-    func setContext(newContext:EAGLContext) {
-        if self.context != newContext {
-            self.deleteFramebuffer()
-            self.context = newContext
-        }
     }
     
     func createFramebuffer() {
@@ -67,7 +64,7 @@ class EAGLView : UIView {
             
             glFramebufferRenderbuffer(GLenum(GL_FRAMEBUFFER), GLenum(GL_COLOR_ATTACHMENT0), GLenum(GL_RENDERBUFFER), self.colorRenderbuffer)
             
-            var status = glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER))
+            let status = glCheckFramebufferStatus(GLenum(GL_FRAMEBUFFER))
             if (Int32(status) != GL_FRAMEBUFFER_COMPLETE) {
                 NSLog("Failed to make complete framebuffer object %x", status)
             }

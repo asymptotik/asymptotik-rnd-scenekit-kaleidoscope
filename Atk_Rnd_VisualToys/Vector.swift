@@ -84,7 +84,7 @@ func Vector2Make(x: Float, y: Float) -> Vector2 {
 * Adds two Vector2 vectors and returns the result as a new Vector2.
 */
 func + (left: Vector2, right: Vector2) -> Vector2 {
-    return Vector2Make(left.x + right.x, left.y + right.y)
+    return Vector2Make(left.x + right.x, y: left.y + right.y)
 }
 
 /**
@@ -98,7 +98,7 @@ func += (inout left: Vector2, right: Vector2) {
 * Subtracts two Vector2 vectors and returns the result as a new Vector2.
 */
 func - (left: Vector2, right: Vector2) -> Vector2 {
-    return Vector2Make(left.x - right.x, left.y - right.y)
+    return Vector2Make(left.x - right.x, y: left.y - right.y)
 }
 
 /**
@@ -112,7 +112,7 @@ func -= (inout left: Vector2, right: Vector2) {
 * Multiplies two Vector2 vectors and returns the result as a new Vector2.
 */
 func * (left: Vector2, right: Vector2) -> Vector2 {
-    return Vector2Make(left.x * right.x, left.y * right.y)
+    return Vector2Make(left.x * right.x, y: left.y * right.y)
 }
 
 /**
@@ -127,7 +127,7 @@ func *= (inout left: Vector2, right: Vector2) {
 * returns the result as a new Vector2.
 */
 func * (vector: Vector2, scalar: Float) -> Vector2 {
-    return Vector2Make(vector.x * scalar, vector.y * scalar)
+    return Vector2Make(vector.x * scalar, y: vector.y * scalar)
 }
 
 /**
@@ -141,7 +141,7 @@ func *= (inout vector: Vector2, scalar: Float) {
 * Divides two Vector2 vectors abd returns the result as a new Vector2
 */
 func / (left: Vector2, right: Vector2) -> Vector2 {
-    return Vector2Make(left.x / right.x, left.y / right.y)
+    return Vector2Make(left.x / right.x, y: left.y / right.y)
 }
 
 /**
@@ -156,7 +156,7 @@ func /= (inout left: Vector2, right: Vector2) {
 * returns the result as a new Vector2.
 */
 func / (vector: Vector2, scalar: Float) -> Vector2 {
-    return Vector2Make(vector.x / scalar, vector.y / scalar)
+    return Vector2Make(vector.x / scalar, y: vector.y / scalar)
 }
 
 /**
@@ -213,14 +213,14 @@ func Vector2CrossProduct(left: Vector2, right: Vector2) -> Float {
 * Calculates the SCNVector from lerping between two Vector2 vectors
 */
 func Vector2Lerp(vectorStart: Vector2, vectorEnd: Vector2, t: Float) -> Vector2 {
-    return Vector2Make(vectorStart.x + ((vectorEnd.x - vectorStart.x) * t), vectorStart.y + ((vectorEnd.y - vectorStart.y) * t))
+    return Vector2Make(vectorStart.x + ((vectorEnd.x - vectorStart.x) * t), y: vectorStart.y + ((vectorEnd.y - vectorStart.y) * t))
 }
 
 /**
 * Project the vector, vectorToProject, onto the vector, projectionVector.
 */
 func Vector2Project(vectorToProject: Vector2, projectionVector: Vector2) -> Vector2 {
-    let scale: Float = Vector2DotProduct(projectionVector, vectorToProject) / Vector2DotProduct(projectionVector, projectionVector)
+    let scale: Float = Vector2DotProduct(projectionVector, right: vectorToProject) / Vector2DotProduct(projectionVector, right: projectionVector)
     let v: Vector2 = projectionVector * scale
     return v
 }

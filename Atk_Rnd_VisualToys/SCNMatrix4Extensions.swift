@@ -10,7 +10,11 @@ import Foundation
 import SceneKit
 
 extension SCNMatrix4 {
-    
+    var description:String {
+        get {
+            return "\(self.m11) \(self.m12) \(self.m13) \(self.m14) \n \(self.m21) \(self.m22) \(self.m23) \(self.m24) \n \(self.m31) \(self.m32) \(self.m33) \(self.m34) \n \(self.m41) \(self.m42) \(self.m43) \(self.m44) \n"
+        }
+    }
 }
 
 /**

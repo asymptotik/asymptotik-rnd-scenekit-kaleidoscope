@@ -31,7 +31,7 @@ class FrequencyCounter {
     
     var frequency:Double {
         get {
-            var elapsed = _elapsedTimer.elapsed
+            let elapsed = _elapsedTimer.elapsed
             if elapsed <= 0 {
                 return 0.0
             }

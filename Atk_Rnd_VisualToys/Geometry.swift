@@ -17,23 +17,23 @@ class Geometry {
         let minEx   = extents.min
         let maxEx   = extents.max
         
-        println("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
+        print("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
         
         let r:Float = 1.0;
-        let tri_scale:Float = 1.0;
+        let tri_scale:Float = 2.0;
         
-        var co:Float = Float(cos(M_PI/3.0) * Double(r)); //0.5
-        var si:Float = Float(sin(M_PI/3.0) * Double(r)); //0.86
+        //var co:Float = Float(cos(M_PI/3.0) * Double(r)); //0.5
+        let si:Float = Float(sin(M_PI/3.0) * Double(r)); //0.86
         
         let tri_width:Float = r * tri_scale
         let tri_height:Float = si * tri_scale
         
-        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        print("tri_width: \(tri_width) tri_height: \(tri_height)")
         
         let width:Float = maxEx.x - minEx.x
         let height:Float = maxEx.y - minEx.y
         
-        println("width: \(width) height: \(height)")
+        print("width: \(width) height: \(height)")
         
         let triCountX:Float = ceil(width  / tri_width)
         let xOffset:Float = -(triCountX * tri_width / Float(2.0))
@@ -41,13 +41,13 @@ class Geometry {
         let triCountY:Float = ceil(height  / tri_height)
         let yOffset:Float = -(triCountY * tri_height / Float(2.0))
         
-        println("xOffset: \(xOffset) triCountX: \(triCountX)")
-        println("yOffset: \(yOffset) triCountY: \(triCountY)")
-        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        print("xOffset: \(xOffset) triCountX: \(triCountX)")
+        print("yOffset: \(yOffset) triCountY: \(triCountY)")
+        print("tri_width: \(tri_width) tri_height: \(tri_height)")
         
-        let uva  = Vector2Make(0.0, 0.0)
-        let uvb  = Vector2Make(1.0, 0.0)
-        let uvc  = Vector2Make(0.5, 1.0)
+        let uva  = Vector2Make(0.0, y: 0.0)
+        let uvb  = Vector2Make(1.0, y: 0.0)
+        let uvc  = Vector2Make(0.5, y: 1.0)
         let norm = SCNVector3Make(0.0, 0.0, 1.0)
         
         var vertices:[SCNVector3] = []
@@ -55,25 +55,23 @@ class Geometry {
         var uvs:[Vector2] = []
         var indices:[CInt] = []
         
-        var numTriangles = 0
-        var numPrimitives = 0
-        
-        var vertCountY = Int(triCountY) + 1
+        let vertCountY = Int(triCountY) + 1
         first: for var j:Int = 0; j < vertCountY; j++ {
             
             var startY:Float = tri_height*Float(j)
             startY += yOffset;
             
             var ucArray = (j % 2 == 0 ? [uvb, uva, uvc] : [uva, uvc, uvb])
-            var actualTriCountX = Int(triCountX) + (j % 2 == 0 ? 0 : 1)
-            var vertCountX = Int(actualTriCountX) + 1
+            let actualTriCountX = Int(triCountX) + (j % 2 == 0 ? 0 : 1)
+            let vertCountX = Int(actualTriCountX) + 1
             
             for var i:Int = 0; i < vertCountX; i++ {
                 
                 var startX:Float =  (tri_width * Float(i)) - (j % 2 == 0 ? 0.0 : tri_width / 2.0)
                 startX += xOffset
             
-                vertices.append(SCNVector3( x: startX, y: startY, z: 0.0 ))
+                let z:Float = 0.0 // Float(arc4random()) / Float(UINT32_MAX) * 0.25
+                vertices.append(SCNVector3( x: startX, y: startY, z: z ))
                 normals.append(norm)
                 uvs.append(ucArray[i % 3])
             }
@@ -132,7 +130,7 @@ class Geometry {
         
         // Vertices
         let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
-        var vertexSource = SCNGeometrySource(data: vertexData,
+        let vertexSource = SCNGeometrySource(data: vertexData,
             semantic: SCNGeometrySourceSemanticVertex,
             vectorCount: vertices.count,
             floatComponents: true,
@@ -143,7 +141,7 @@ class Geometry {
         
         // Normals
         let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
-        var normalSource = SCNGeometrySource(data: normalData,
+        let normalSource = SCNGeometrySource(data: normalData,
             semantic: SCNGeometrySourceSemanticNormal,
             vectorCount: normals.count,
             floatComponents: true,
@@ -154,7 +152,7 @@ class Geometry {
         
         // Textures
         let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
-        var uvSource = SCNGeometrySource(data: uvData,
+        let uvSource = SCNGeometrySource(data: uvData,
             semantic: SCNGeometrySourceSemanticTexcoord,
             vectorCount: uvs.count,
             floatComponents: true,
@@ -165,8 +163,8 @@ class Geometry {
         
         // Indices
         var elements:[SCNGeometryElement] = []
-        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
-        var indexElement = SCNGeometryElement(
+        let indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        let indexElement = SCNGeometryElement(
             data: indexData,
             primitiveType: .Triangles,
             primitiveCount: primitiveCount,
@@ -175,7 +173,7 @@ class Geometry {
         
         elements.append(indexElement)
         
-        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
+        let geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
         
         return geo
     }
@@ -186,20 +184,18 @@ class Geometry {
         let minEx   = extents.min
         let maxEx   = extents.max
         
-        println("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
+        print("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
         
-        let r:Float = 1.0;
         let tri_scale:Float = 2.0; //(float)randInt(120, 400);
-
         let tri_width:Float = 1.0 * tri_scale
         let tri_height:Float = 1.0 * tri_scale
         
-        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        print("tri_width: \(tri_width) tri_height: \(tri_height)")
         
         let width:Float = maxEx.x - minEx.x
         let height:Float = maxEx.y - minEx.y
         
-        println("width: \(width) height: \(height)")
+        print("width: \(width) height: \(height)")
         
         let triCountX:Float = ceil(width  / tri_width)
         let xOffset:Float = -(triCountX * tri_width / Float(2.0))
@@ -207,13 +203,13 @@ class Geometry {
         let triCountY:Float = ceil(height  / tri_height)
         let yOffset:Float = -(triCountY * tri_height / Float(2.0))
         
-        println("xOffset: \(xOffset) triCountX: \(triCountX)")
-        println("yOffset: \(yOffset) triCountY: \(triCountY)")
-        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        print("xOffset: \(xOffset) triCountX: \(triCountX)")
+        print("yOffset: \(yOffset) triCountY: \(triCountY)")
+        print("tri_width: \(tri_width) tri_height: \(tri_height)")
         
-        let uva  = Vector2Make(0.0, 0.0)
-        let uvb  = Vector2Make(1.0, 0.0)
-        let uvc  = Vector2Make(0.5, 1.0)
+        let uva  = Vector2Make(0.0, y: 0.0)
+        let uvb  = Vector2Make(1.0, y: 0.0)
+        let uvc  = Vector2Make(0.5, y: 1.0)
         let norm = SCNVector3Make(0.0, 0.0, 1.0)
         
         var vertices:[SCNVector3] = []
@@ -221,18 +217,15 @@ class Geometry {
         var uvs:[Vector2] = []
         var indices:[CInt] = []
         
-        var numTriangles = 0
-        var numPrimitives = 0
-        
-        var vertCountY = Int(triCountY) + 1
+        let vertCountY = Int(triCountY) + 1
         first: for var j:Int = 0; j < vertCountY; j++ {
             
             var startY:Float = tri_height*Float(j)
             startY += yOffset;
             
             var ucArray = (j % 2 == 0 ? [uvc, uva] : [uvb, uvc])
-            var actualTriCountX = Int(triCountX)
-            var vertCountX = Int(actualTriCountX) + 1
+            let actualTriCountX = Int(triCountX)
+            let vertCountX = Int(actualTriCountX) + 1
             
             for var i:Int = 0; i < vertCountX; i++ {
                 
@@ -281,7 +274,7 @@ class Geometry {
         
         // Vertices
         let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
-        var vertexSource = SCNGeometrySource(data: vertexData,
+        let vertexSource = SCNGeometrySource(data: vertexData,
             semantic: SCNGeometrySourceSemanticVertex,
             vectorCount: vertices.count,
             floatComponents: true,
@@ -292,7 +285,7 @@ class Geometry {
         
         // Normals
         let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
-        var normalSource = SCNGeometrySource(data: normalData,
+        let normalSource = SCNGeometrySource(data: normalData,
             semantic: SCNGeometrySourceSemanticNormal,
             vectorCount: normals.count,
             floatComponents: true,
@@ -303,7 +296,7 @@ class Geometry {
         
         // Textures
         let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
-        var uvSource = SCNGeometrySource(data: uvData,
+        let uvSource = SCNGeometrySource(data: uvData,
             semantic: SCNGeometrySourceSemanticTexcoord,
             vectorCount: uvs.count,
             floatComponents: true,
@@ -314,8 +307,8 @@ class Geometry {
         
         // Indices
         var elements:[SCNGeometryElement] = []
-        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
-        var indexElement = SCNGeometryElement(
+        let indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        let indexElement = SCNGeometryElement(
             data: indexData,
             primitiveType: .Triangles,
             primitiveCount: primitiveCount,
@@ -324,7 +317,7 @@ class Geometry {
         
         elements.append(indexElement)
         
-        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
+        let geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
         
         return geo
     }
@@ -335,49 +328,46 @@ class Geometry {
         let minEx = extents.min
         let maxEx = extents.max
         
-        println("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
+        print("minEx: (\(minEx.x), \(minEx.y), \(minEx.z)) maxEx: (\(maxEx.x), \(maxEx.y), \(maxEx.z))")
         
         let r:Float = 1.0;
         let tri_scale:Float = 2.0; //(float)randInt(120, 400);
         
-        var co:Float = Float(cos(M_PI/3.0) * Double(r)); //0.5
-        var si:Float = Float(sin(M_PI/3.0) * Double(r)); //0.86
+        let co:Float = Float(cos(M_PI/3.0) * Double(r)); //0.5
+        let si:Float = Float(sin(M_PI/3.0) * Double(r)); //0.86
         
         let tri_width:Float = r * tri_scale
         let tri_height:Float = si * tri_scale
         
-        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        print("tri_width: \(tri_width) tri_height: \(tri_height)")
         
         let width:Float = maxEx.x - minEx.x
         let height:Float = maxEx.y - minEx.y
         
-        println("width: \(width) height: \(height)")
+        print("width: \(width) height: \(height)")
         
         let triCountX:Float = ceil(width / tri_width / Float(1.5))
         let w:Float = ((triCountX * Float(1.5)) + Float(0.5)) * tri_width
         let xOffset:Float = -(w/Float(2.0)) + tri_width
         
-        var h = height  / (tri_height * Float(2.0))
-        println("h: \(h)")
+        let h = height  / (tri_height * Float(2.0))
+        print("h: \(h)")
         
         let triCountY:Float = ceil(height  / (tri_height * Float(2.0))) + 1
         let yOffset:Float = -(triCountY * (tri_height * Float(2.0)) - tri_height) / Float(2.0)
         
-        println("xOffset: \(xOffset) triCountX: \(triCountX)")
-        println("yOffset: \(yOffset) triCountY: \(triCountY)")
-        println("tri_width: \(tri_width) tri_height: \(tri_height)")
+        print("xOffset: \(xOffset) triCountX: \(triCountX)")
+        print("yOffset: \(yOffset) triCountY: \(triCountY)")
+        print("tri_width: \(tri_width) tri_height: \(tri_height)")
         
-        let uva  = Vector2Make(0.0, 0.0)
-        let uvb  = Vector2Make(1.0, 0.0)
-        let uvc  = Vector2Make(0.5, 1.0)
+        let uva  = Vector2Make(0.0, y: 0.0)
+        let uvb  = Vector2Make(1.0, y: 0.0)
+        let uvc  = Vector2Make(0.5, y: 1.0)
         let norm = SCNVector3Make(0.0, 0.0, 1.0)
         
         var vertices:[SCNVector3] = [];
         var normals:[SCNVector3] = [];
         var uvs:[Vector2] = [];
-        
-        var numTriangles = 0
-        var numPrimitives = 0
         
         // creates a series of hexagons composed of 6 triangles each
         first: for( var i:Float = 0; i < triCountX; i++ ) {
@@ -387,8 +377,8 @@ class Geometry {
                 var startY:Float = (i%2==0) ? (tri_height*2*j) : tri_height*2*j + (tri_height)
                 startY += yOffset;
                 
-                var scale = SCNVector3( x: tri_scale, y: tri_scale, z: 1.0 )
-                var start = SCNVector3( x: startX, y: startY, z: 0.0 )
+                let scale = SCNVector3( x: tri_scale, y: tri_scale, z: 1.0 )
+                let start = SCNVector3( x: startX, y: startY, z: 0.0 )
                 //var start = SCNVector3( x: 0.0, y: 0.0, z: 0.0 )
                 
                 vertices.append(SCNVector3Make(0.0, 0.0, 0.0) + start)
@@ -467,8 +457,6 @@ class Geometry {
                 uvs.append(uva)
                 uvs.append(uvc)
                 uvs.append(uvb)
-                
-                numTriangles += 6
             }
         }
         
@@ -476,7 +464,7 @@ class Geometry {
         
         // Vertices
         let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
-        var vertexSource = SCNGeometrySource(data: vertexData,
+        let vertexSource = SCNGeometrySource(data: vertexData,
             semantic: SCNGeometrySourceSemanticVertex,
             vectorCount: vertices.count,
             floatComponents: true,
@@ -487,7 +475,7 @@ class Geometry {
         
         // Normals
         let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
-        var normalSource = SCNGeometrySource(data: normalData,
+        let normalSource = SCNGeometrySource(data: normalData,
             semantic: SCNGeometrySourceSemanticNormal,
             vectorCount: normals.count,
             floatComponents: true,
@@ -498,7 +486,7 @@ class Geometry {
         
         // Textures
         let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
-        var uvSource = SCNGeometrySource(data: uvData,
+        let uvSource = SCNGeometrySource(data: uvData,
             semantic: SCNGeometrySourceSemanticTexcoord,
             vectorCount: uvs.count,
             floatComponents: true,
@@ -541,8 +529,8 @@ class Geometry {
             indices.append(CInt(n))
         }
         
-        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
-        var indexElement = SCNGeometryElement(
+        let indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        let indexElement = SCNGeometryElement(
             data: indexData,
             primitiveType: .Triangles,
             primitiveCount: primitiveCount,
@@ -551,7 +539,7 @@ class Geometry {
         
         elements.append(indexElement)
         
-        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
+        let geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: elements)
         
         return geo
     }
@@ -571,7 +559,7 @@ class Geometry {
         ]
         
         let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
-        var vertexSource = SCNGeometrySource(data: vertexData,
+        let vertexSource = SCNGeometrySource(data: vertexData,
             semantic: SCNGeometrySourceSemanticVertex,
             vectorCount: vertices.count,
             floatComponents: true,
@@ -589,7 +577,7 @@ class Geometry {
         ]
         
         let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
-        var normalSource = SCNGeometrySource(data: normalData,
+        let normalSource = SCNGeometrySource(data: normalData,
             semantic: SCNGeometrySourceSemanticNormal,
             vectorCount: normals.count,
             floatComponents: true,
@@ -600,14 +588,14 @@ class Geometry {
         
         // Texture
         var uvs:[Vector2] = [
-            Vector2Make(0.0, 1.0),
-            Vector2Make(1.0, 1.0),
-            Vector2Make(0.0, 0.0),
-            Vector2Make(1.0, 0.0)
+            Vector2Make(0.0, y: 1.0),
+            Vector2Make(1.0, y: 1.0),
+            Vector2Make(0.0, y: 0.0),
+            Vector2Make(1.0, y: 0.0)
         ]
         
         let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
-        var uvSource = SCNGeometrySource(data: uvData,
+        let uvSource = SCNGeometrySource(data: uvData,
             semantic: SCNGeometrySourceSemanticTexcoord,
             vectorCount: uvs.count,
             floatComponents: true,
@@ -618,20 +606,20 @@ class Geometry {
         
         // Indexes
         var indices:[CInt] = [0, 1, 2, 2, 1, 3]
-        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
-        var indexElement = SCNGeometryElement(
+        let indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        let indexElement = SCNGeometryElement(
             data: indexData,
             primitiveType: .Triangles,
             primitiveCount: 2,
             bytesPerIndex: sizeof(CInt)
         )
         
-        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: [indexElement])
+        let geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: [indexElement])
         
         let me2 = UIImage(named: "me2")
         
         // material
-        var material = SCNMaterial()
+        let material = SCNMaterial()
         material.diffuse.contents  = me2
         material.doubleSided = true
         material.shininess = 1.0;
@@ -642,10 +630,6 @@ class Geometry {
     
     class func createUnitQuad(view:SCNView) -> SCNGeometry {
         
-        let extents = view.getExtents()
-        let minEx   = extents.min
-        let maxEx   = extents.max
-        
         // Vertices
         var vertices:[SCNVector3] = [
             SCNVector3Make(-1, 1, 0.0),
@@ -655,7 +639,7 @@ class Geometry {
         ]
         
         let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
-        var vertexSource = SCNGeometrySource(data: vertexData,
+        let vertexSource = SCNGeometrySource(data: vertexData,
             semantic: SCNGeometrySourceSemanticVertex,
             vectorCount: vertices.count,
             floatComponents: true,
@@ -673,7 +657,7 @@ class Geometry {
         ]
         
         let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
-        var normalSource = SCNGeometrySource(data: normalData,
+        let normalSource = SCNGeometrySource(data: normalData,
             semantic: SCNGeometrySourceSemanticNormal,
             vectorCount: normals.count,
             floatComponents: true,
@@ -684,14 +668,14 @@ class Geometry {
         
         // Texture
         var uvs:[Vector2] = [
-            Vector2Make(0.0, 1.0),
-            Vector2Make(1.0, 1.0),
-            Vector2Make(0.0, 0.0),
-            Vector2Make(1.0, 0.0)
+            Vector2Make(0.0, y: 1.0),
+            Vector2Make(1.0, y: 1.0),
+            Vector2Make(0.0, y: 0.0),
+            Vector2Make(1.0, y: 0.0)
         ]
         
         let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
-        var uvSource = SCNGeometrySource(data: uvData,
+        let uvSource = SCNGeometrySource(data: uvData,
             semantic: SCNGeometrySourceSemanticTexcoord,
             vectorCount: uvs.count,
             floatComponents: true,
@@ -702,15 +686,15 @@ class Geometry {
         
         // Indexes
         var indices:[CInt] = [0, 1, 2, 2, 1, 3]
-        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
-        var indexElement = SCNGeometryElement(
+        let indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        let indexElement = SCNGeometryElement(
             data: indexData,
             primitiveType: .Triangles,
             primitiveCount: 2,
             bytesPerIndex: sizeof(CInt)
         )
         
-        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: [indexElement])
+        let geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: [indexElement])
         
         return geo
     }
@@ -726,7 +710,7 @@ class Geometry {
         ]
         
         let vertexData = NSData(bytes: vertices, length: vertices.count * sizeof(SCNVector3))
-        var vertexSource = SCNGeometrySource(data: vertexData,
+        let vertexSource = SCNGeometrySource(data: vertexData,
             semantic: SCNGeometrySourceSemanticVertex,
             vectorCount: vertices.count,
             floatComponents: true,
@@ -743,7 +727,7 @@ class Geometry {
         ]
         
         let normalData = NSData(bytes: normals, length: normals.count * sizeof(SCNVector3))
-        var normalSource = SCNGeometrySource(data: normalData,
+        let normalSource = SCNGeometrySource(data: normalData,
             semantic: SCNGeometrySourceSemanticNormal,
             vectorCount: normals.count,
             floatComponents: true,
@@ -754,13 +738,13 @@ class Geometry {
         
         // Texture
         var uvs:[Vector2] = [
-            Vector2Make(0.0, 0.0),
-            Vector2Make(1.0, 0.0),
-            Vector2Make(0.5, 1.0)
+            Vector2Make(0.0, y: 0.0),
+            Vector2Make(1.0, y: 0.0),
+            Vector2Make(0.5, y: 1.0)
         ]
         
         let uvData = NSData(bytes: uvs, length: uvs.count * sizeof(Vector2))
-        var uvSource = SCNGeometrySource(data: uvData,
+        let uvSource = SCNGeometrySource(data: uvData,
             semantic: SCNGeometrySourceSemanticTexcoord,
             vectorCount: uvs.count,
             floatComponents: true,
@@ -771,20 +755,20 @@ class Geometry {
         
         // Indexes
         var indices:[CInt] = [0, 1, 2]
-        var indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
-        var indexElement = SCNGeometryElement(
+        let indexData  = NSData(bytes: indices, length: sizeof(CInt) * indices.count)
+        let indexElement = SCNGeometryElement(
             data: indexData,
             primitiveType: .Triangles,
             primitiveCount: 1,
             bytesPerIndex: sizeof(CInt)
         )
         
-        var geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: [indexElement])
+        let geo = SCNGeometry(sources: [vertexSource, normalSource, uvSource], elements: [indexElement])
         
         let me2 = UIImage(named: "me2")
         
         // material
-        var material = SCNMaterial()
+        let material = SCNMaterial()
         material.diffuse.contents  = me2
         material.doubleSided = true
         material.shininess = 1.0;
@@ -794,7 +778,7 @@ class Geometry {
     }
     
     class func createCube(view:SCNView) -> SCNGeometry {
-        var halfSide:Float = 1.0;
+        let halfSide:Float = 1.0;
         
         var positions = [
             SCNVector3Make(-halfSide, -halfSide,  halfSide),
@@ -882,24 +866,24 @@ class Geometry {
             5, 7, 6
         ]
         
-        var vertexSource = SCNGeometrySource(vertices: &positions, count: 24)
-        var normalSource = SCNGeometrySource(normals: &normals, count: 24)
+        let vertexSource = SCNGeometrySource(vertices: &positions, count: 24)
+        let normalSource = SCNGeometrySource(normals: &normals, count: 24)
         
-        var dat  = NSData(
+        let dat  = NSData(
             bytes: indexes,
             length: sizeof(CInt) * indexes.count
         )
         
-        var ele = SCNGeometryElement(
+        let ele = SCNGeometryElement(
             data: dat,
             primitiveType: .Triangles,
             primitiveCount: 12,
             bytesPerIndex: sizeof(CInt)
         )
         
-        var geo = SCNGeometry(sources: [vertexSource, normalSource], elements: [ele])
+        let geo = SCNGeometry(sources: [vertexSource, normalSource], elements: [ele])
         
-        var material = SCNMaterial()
+        let material = SCNMaterial()
         material.diffuse.contents  = UIColor.redColor()
         geo.materials = [material];
         

@@ -118,7 +118,7 @@ public class CircularQueue<T> {
             return nil
         }
         
-        var element:T? = _elements[_start]
+        let element:T? = _elements[_start]
         if element != nil {
             _elements[_start++] = nil
             if _start >= _maxElements {
@@ -139,12 +139,12 @@ public class CircularQueue<T> {
     }
     
     func get(index:Int) -> T? {
-        var sz:Int = self.size
+        let sz:Int = self.size
         if index < 0 || index >= sz {
             return nil
         }
         
-        var idx:Int = (_start + index) % _maxElements
+        let idx:Int = (_start + index) % _maxElements
         return _elements[idx]
     }
 }

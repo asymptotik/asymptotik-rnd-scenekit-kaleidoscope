@@ -11,7 +11,7 @@ import OpenGLES
 
 class OpenGlUtils {
     class func checkError(tag:String) {
-        var error = glGetError()
+        let error = glGetError()
 
         switch Int32(error) {
         case GL_INVALID_VALUE:
@@ -30,7 +30,7 @@ class OpenGlUtils {
     }
     
     class func checkFrameBufferStatus(framebuffer:GLenum) {
-        var status  = glCheckFramebufferStatus(framebuffer)
+        let status  = glCheckFramebufferStatus(framebuffer)
         
         switch Int32(status) {
         case GL_FRAMEBUFFER_UNDEFINED:

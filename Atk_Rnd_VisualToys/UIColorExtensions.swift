@@ -12,9 +12,9 @@ import UIKit
 extension UIColor {
     class func randomColor() -> UIColor {
         
-        var r = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
-        var g = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
-        var b = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+        let r = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+        let g = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+        let b = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
         
         return UIColor(red: r, green: g, blue: b, alpha: 1.0)
     }

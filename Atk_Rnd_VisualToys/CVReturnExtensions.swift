@@ -9,46 +9,46 @@
 import Foundation
 import CoreVideo
 
-extension _CVReturn {
+extension CVReturn {
     
     static func stringValue(value:CVReturn) -> String {
 
         var ret = ""
             
         switch value {
-        case kCVReturnSuccess.value:
+        case kCVReturnSuccess:
             ret = "kCVReturnSuccess"
-         case kCVReturnFirst.value:
+         case kCVReturnFirst:
             ret = "kCVReturnFirst"
-         case kCVReturnLast.value:
+         case kCVReturnLast:
             ret = "kCVReturnLast"
-         case kCVReturnInvalidArgument.value:
+         case kCVReturnInvalidArgument:
             ret = "kCVReturnInvalidArgument"
-         case kCVReturnAllocationFailed.value:
+         case kCVReturnAllocationFailed:
             ret = "kCVReturnAllocationFailed"
-        case kCVReturnInvalidDisplay.value:
+        case kCVReturnInvalidDisplay:
             ret = "kCVReturnInvalidDisplay"
-        case kCVReturnDisplayLinkAlreadyRunning.value:
+        case kCVReturnDisplayLinkAlreadyRunning:
             ret = "kCVReturnDisplayLinkAlreadyRunning"
-        case kCVReturnDisplayLinkNotRunning.value:
+        case kCVReturnDisplayLinkNotRunning:
             ret = "kCVReturnDisplayLinkNotRunning"
-        case kCVReturnDisplayLinkCallbacksNotSet.value:
+        case kCVReturnDisplayLinkCallbacksNotSet:
             ret = "kCVReturnDisplayLinkCallbacksNotSet"
-        case kCVReturnInvalidPixelFormat.value:
+        case kCVReturnInvalidPixelFormat:
             ret = "kCVReturnInvalidPixelFormat"
-        case kCVReturnInvalidSize.value:
+        case kCVReturnInvalidSize:
             ret = "kCVReturnInvalidSize"
-        case kCVReturnInvalidPixelBufferAttributes.value:
+        case kCVReturnInvalidPixelBufferAttributes:
             ret = "kCVReturnInvalidPixelBufferAttributes"
-        case kCVReturnPixelBufferNotOpenGLCompatible.value:
+        case kCVReturnPixelBufferNotOpenGLCompatible:
             ret = "kCVReturnPixelBufferNotOpenGLCompatible"
-        case kCVReturnPixelBufferNotMetalCompatible.value:
+        case kCVReturnPixelBufferNotMetalCompatible:
             ret = "kCVReturnPixelBufferNotMetalCompatible"
-        case kCVReturnWouldExceedAllocationThreshold.value:
+        case kCVReturnWouldExceedAllocationThreshold:
             ret = "kCVReturnWouldExceedAllocationThreshold"
-        case kCVReturnPoolAllocationFailed.value:
+        case kCVReturnPoolAllocationFailed:
             ret = "kCVReturnPoolAllocationFailed"
-        case kCVReturnInvalidPoolAttributes.value:
+        case kCVReturnInvalidPoolAttributes:
             ret = "kCVReturnInvalidPoolAttributes"
         default:
             ret = "Unknown"

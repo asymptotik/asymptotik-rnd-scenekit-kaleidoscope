@@ -31,9 +31,11 @@
 		1DA51AA1199077E10048BD54 /* SCNVector3Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA51AA0199077E10048BD54 /* SCNVector3Extensions.swift */; };
 		1DA51AA6199152550048BD54 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA51AA5199152550048BD54 /* Vector.swift */; };
 		1DA51AA81991642C0048BD54 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */; };
+		1DB1750819E1283700284FEB /* KaleidoscopeHudViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB1750719E1283700284FEB /* KaleidoscopeHudViewController.swift */; };
+		1DB9842C19E9E440002DB251 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB9842B19E9E440002DB251 /* CGPointExtensions.swift */; };
+		1DB9843319E9F106002DB251 /* Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DB9843219E9F106002DB251 /* Rotation.m */; };
 		1DC1D8E319DA7F4F00C86F3A /* ScreenTextureQuad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC1D8E219DA7F4F00C86F3A /* ScreenTextureQuad.swift */; };
 		1DC1D91A19DA8A8B00C86F3A /* GLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DC1D91919DA8A8B00C86F3A /* GLProgram.m */; };
-		1DC1D91C19DAAA4D00C86F3A /* TmpTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC1D91B19DAAA4D00C86F3A /* TmpTexture.swift */; };
 		1DF7200919D0C284002EDF59 /* FrameBufferVideoRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7200819D0C284002EDF59 /* FrameBufferVideoRecorder.swift */; };
 		1DFE59EE19900D6900B8B3D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFE59ED19900D6900B8B3D3 /* AppDelegate.swift */; };
 		1DFE59F019900D6900B8B3D3 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DFE59EF19900D6900B8B3D3 /* art.scnassets */; };
@@ -67,11 +69,14 @@
 		1DA51AA0199077E10048BD54 /* SCNVector3Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCNVector3Extensions.swift; sourceTree = "<group>"; };
 		1DA51AA5199152550048BD54 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
 		1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		1DB1750719E1283700284FEB /* KaleidoscopeHudViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KaleidoscopeHudViewController.swift; sourceTree = "<group>"; };
+		1DB9842B19E9E440002DB251 /* CGPointExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
+		1DB9843119E9F106002DB251 /* Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rotation.h; sourceTree = "<group>"; };
+		1DB9843219E9F106002DB251 /* Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rotation.m; sourceTree = "<group>"; };
 		1DC1D8E219DA7F4F00C86F3A /* ScreenTextureQuad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenTextureQuad.swift; sourceTree = "<group>"; };
 		1DC1D91719DA8A8B00C86F3A /* Atk_Rnd_VisualToys-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Atk_Rnd_VisualToys-Bridging-Header.h"; sourceTree = "<group>"; };
 		1DC1D91819DA8A8B00C86F3A /* GLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLProgram.h; sourceTree = "<group>"; };
 		1DC1D91919DA8A8B00C86F3A /* GLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLProgram.m; sourceTree = "<group>"; };
-		1DC1D91B19DAAA4D00C86F3A /* TmpTexture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmpTexture.swift; sourceTree = "<group>"; };
 		1DF7200819D0C284002EDF59 /* FrameBufferVideoRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameBufferVideoRecorder.swift; sourceTree = "<group>"; };
 		1DFE59E819900D6900B8B3D3 /* KaleidoKam
 .app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KaleidoKam\n.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +105,7 @@
 				1DFE59F319900D6900B8B3D3 /* Main.storyboard */,
 				1DFE59F119900D6900B8B3D3 /* KaleidoscopeViewController.swift */,
 				1D4E54A51995491700E6A82C /* KaleidoscopeSettingsViewController.swift */,
+				1DB1750719E1283700284FEB /* KaleidoscopeHudViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -141,6 +147,9 @@
 				1DA51AA71991642C0048BD54 /* UIColorExtensions.swift */,
 				1DA3F6F319918F4A004B2681 /* SCNMatrix4Extensions.swift */,
 				1D6F67AE199570F700D61D9C /* SCNViewExtensions.swift */,
+				1DB9842B19E9E440002DB251 /* CGPointExtensions.swift */,
+				1DB9843119E9F106002DB251 /* Rotation.h */,
+				1DB9843219E9F106002DB251 /* Rotation.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -161,7 +170,6 @@
 				1DF7200819D0C284002EDF59 /* FrameBufferVideoRecorder.swift */,
 				1D6F67B01995729A00D61D9C /* VideoCaptureBuffer.swift */,
 				1D6F67AC1995707400D61D9C /* Geometry.swift */,
-				1DC1D91B19DAAA4D00C86F3A /* TmpTexture.swift */,
 				1D9A299519932F5B00854CB4 /* Containers */,
 				1DA51AA4199152440048BD54 /* Math */,
 				1DA51A9F199077A10048BD54 /* Extensions */,
@@ -253,7 +261,9 @@
 		1DFE59E019900D6900B8B3D3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Asymptotik Limited";
 				TargetAttributes = {
 					1DFE59E719900D6900B8B3D3 = {
@@ -304,12 +314,13 @@
 				1D0D8A8D19DA2F8700C49211 /* AtkSCNView.swift in Sources */,
 				1DA51AA1199077E10048BD54 /* SCNVector3Extensions.swift in Sources */,
 				1DC1D91A19DA8A8B00C86F3A /* GLProgram.m in Sources */,
-				1DC1D91C19DAAA4D00C86F3A /* TmpTexture.swift in Sources */,
+				1DB1750819E1283700284FEB /* KaleidoscopeHudViewController.swift in Sources */,
 				1D9A299419932B3000854CB4 /* RecycleContainer.swift in Sources */,
 				1D4E54A61995491700E6A82C /* KaleidoscopeSettingsViewController.swift in Sources */,
 				1D9A299B1993491500854CB4 /* LockHandle.swift in Sources */,
 				1DFE59F219900D6900B8B3D3 /* KaleidoscopeViewController.swift in Sources */,
 				1D0D8A8F19DA489700C49211 /* SCNMath.swift in Sources */,
+				1DB9842C19E9E440002DB251 /* CGPointExtensions.swift in Sources */,
 				1DF7200919D0C284002EDF59 /* FrameBufferVideoRecorder.swift in Sources */,
 				1D9A299719932F7000854CB4 /* Queue.swift in Sources */,
 				1DA51AA6199152550048BD54 /* Vector.swift in Sources */,
@@ -325,6 +336,7 @@
 				1D6F67AF199570F700D61D9C /* SCNViewExtensions.swift in Sources */,
 				1DA51AA81991642C0048BD54 /* UIColorExtensions.swift in Sources */,
 				1D0D8A1919D7477A00C49211 /* CVReturnExtensions.swift in Sources */,
+				1DB9843319E9F106002DB251 /* Rotation.m in Sources */,
 				1D0D8A8919DA0B1600C49211 /* OpenGlUtils.swift in Sources */,
 				1D4E54A019940E9600E6A82C /* FrequencyCounter.swift in Sources */,
 			);
@@ -364,6 +376,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -431,6 +444,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Atk_Rnd_VisualToys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asymptotik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "KaleidoKam\n";
 				SWIFT_OBJC_BRIDGING_HEADER = "Atk_Rnd_VisualToys/Atk_Rnd_VisualToys-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -447,6 +461,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Atk_Rnd_VisualToys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.asymptotik.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "KaleidoKam\n";
 				SWIFT_OBJC_BRIDGING_HEADER = "Atk_Rnd_VisualToys/Atk_Rnd_VisualToys-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
